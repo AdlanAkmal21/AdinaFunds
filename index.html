@@ -1,0 +1,2615 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#2563eb" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Adlan &amp; Azfa’s Funds" />
+  <title>Adlan &amp; Azfa’s Funds</title>
+
+  <!-- Hosted PWA Manifest & App Icons (Enables True Fullscreen WebAPK on Android) -->
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png" />
+  <link rel="apple-touch-icon" href="./icon-192.png" />
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+
+  <!-- Lucide Icons & Chart.js -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    :root,
+    html[data-profile="adlan"] {
+      --accent-50: #eff6ff;
+      --accent-100: #dbeafe;
+      --accent-200: #bfdbfe;
+      --accent-300: #93c5fd;
+      --accent-400: #60a5fa;
+      --accent-500: #3b82f6;
+      --accent-600: #2563eb;
+      --accent-700: #1d4ed8;
+      --accent-800: #1e40af;
+      --accent-rgb: 37, 99, 235;
+      --accent-mid-rgb: 59, 130, 246;
+    }
+
+    html[data-profile="azfa"] {
+      --accent-50: #fff0f7;
+      --accent-100: #ffd9ec;
+      --accent-200: #ffb3da;
+      --accent-300: #ff85c4;
+      --accent-400: #ff5cae;
+      --accent-500: #ff4da6;
+      --accent-600: #ff2a93;
+      --accent-700: #f51b84;
+      --accent-800: #ff69b4;
+      --accent-rgb: 255, 42, 147;
+      --accent-mid-rgb: 255, 77, 166;
+    }
+
+    /* Dynamic Profile Accent Overrides across the entire UI */
+    .bg-indigo-50 { background-color: var(--accent-50) !important; }
+    .bg-indigo-100 { background-color: var(--accent-100) !important; }
+    .bg-indigo-500 { background-color: var(--accent-500) !important; }
+    .bg-indigo-600 { background-color: var(--accent-600) !important; }
+    .hover\:bg-indigo-100:hover { background-color: var(--accent-100) !important; }
+    .hover\:bg-indigo-700:hover { background-color: var(--accent-700) !important; }
+
+    .bg-indigo-50\/80 { background-color: rgba(var(--accent-mid-rgb), 0.08) !important; }
+    .dark .bg-indigo-500\/10 { background-color: rgba(var(--accent-mid-rgb), 0.12) !important; }
+    .dark .bg-indigo-500\/15 { background-color: rgba(var(--accent-mid-rgb), 0.16) !important; }
+    .dark .bg-indigo-500\/20 { background-color: rgba(var(--accent-mid-rgb), 0.22) !important; }
+    .dark .hover\:bg-indigo-500\/25:hover { background-color: rgba(var(--accent-mid-rgb), 0.26) !important; }
+
+    .text-indigo-100 { color: var(--accent-100) !important; }
+    .text-indigo-200 { color: var(--accent-200) !important; }
+    .text-indigo-600 { color: var(--accent-600) !important; }
+    .dark .text-indigo-200 { color: var(--accent-200) !important; }
+    .dark .text-indigo-300 { color: var(--accent-300) !important; }
+    .dark .text-indigo-400 { color: var(--accent-400) !important; }
+
+    .border-indigo-200 { border-color: var(--accent-200) !important; }
+    .border-indigo-200\/70 { border-color: rgba(var(--accent-mid-rgb), 0.28) !important; }
+    .border-indigo-200\/80 { border-color: rgba(var(--accent-mid-rgb), 0.32) !important; }
+    .dark .border-indigo-500\/25 { border-color: rgba(var(--accent-mid-rgb), 0.28) !important; }
+    .dark .border-indigo-500\/30 { border-color: rgba(var(--accent-mid-rgb), 0.32) !important; }
+
+    .from-indigo-600 {
+      --tw-gradient-from: var(--accent-600) var(--tw-gradient-from-position) !important;
+      --tw-gradient-to: rgba(var(--accent-rgb), 0) var(--tw-gradient-to-position) !important;
+      --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+    }
+    .via-indigo-700 {
+      --tw-gradient-to: rgba(var(--accent-rgb), 0) var(--tw-gradient-to-position) !important;
+      --tw-gradient-stops: var(--tw-gradient-from), var(--accent-700) var(--tw-gradient-via-position), var(--tw-gradient-to) !important;
+    }
+    .to-violet-600 { --tw-gradient-to: var(--accent-500) var(--tw-gradient-to-position) !important; }
+    .to-violet-800 { --tw-gradient-to: var(--accent-800) var(--tw-gradient-to-position) !important; }
+
+    .shadow-indigo-500\/20 { --tw-shadow-color: rgba(var(--accent-mid-rgb), 0.22) !important; }
+    .shadow-indigo-500\/25 { --tw-shadow-color: rgba(var(--accent-mid-rgb), 0.26) !important; }
+    .shadow-indigo-600\/20 { --tw-shadow-color: rgba(var(--accent-rgb), 0.22) !important; }
+    .shadow-indigo-600\/25 { --tw-shadow-color: rgba(var(--accent-rgb), 0.26) !important; }
+    .shadow-indigo-600\/35 { --tw-shadow-color: rgba(var(--accent-rgb), 0.35) !important; }
+    .focus\:ring-indigo-500:focus { --tw-ring-color: var(--accent-500) !important; }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+    /* Custom subtle scrollbar */
+    ::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(148, 163, 184, 0.35);
+      border-radius: 9999px;
+    }
+
+    /* ==================== UI ANIMATIONS ==================== */
+    button:not(:disabled) {
+      transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1),
+                  background-color 0.2s ease,
+                  border-color 0.2s ease,
+                  color 0.2s ease,
+                  box-shadow 0.2s ease,
+                  opacity 0.2s ease;
+    }
+    button:active:not(:disabled) {
+      transform: scale(0.95);
+    }
+
+    /* Tactile Tap Ripple */
+    .tap-ripple {
+      position: fixed;
+      width: 14px;
+      height: 14px;
+      margin-left: -7px;
+      margin-top: -7px;
+      border-radius: 9999px;
+      background: radial-gradient(circle, rgba(var(--accent-mid-rgb), 0.42) 0%, rgba(var(--accent-mid-rgb), 0) 70%);
+      pointer-events: none;
+      z-index: 9999;
+      animation: tapRippleBurst 0.52s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    @keyframes tapRippleBurst {
+      0% {
+        opacity: 0.95;
+        transform: scale(0.4);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(4.2);
+      }
+    }
+
+    /* App Shell & Staggered Page Load Entrance */
+    .app-shell-enter {
+      animation: appShellReveal 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    @keyframes appShellReveal {
+      from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.99);
+      }
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    .stagger-item {
+      opacity: 0;
+      animation: cardRiseIn 0.46s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    .stagger-1 { animation-delay: 0.03s; }
+    .stagger-2 { animation-delay: 0.08s; }
+    .stagger-3 { animation-delay: 0.13s; }
+    .stagger-4 { animation-delay: 0.18s; }
+    .stagger-5 { animation-delay: 0.23s; }
+
+    @keyframes cardRiseIn {
+      from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.985);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    /* Directional Tab Transitions */
+    .tab-panel {
+      animation: fadeSlideIn 0.26s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .tab-enter-right {
+      animation: slideFromRight 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .tab-enter-left {
+      animation: slideFromLeft 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    @keyframes fadeSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    @keyframes slideFromRight {
+      from {
+        opacity: 0;
+        transform: translateX(16px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    @keyframes slideFromLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-16px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    /* Bottom Nav Active Icon Bounce */
+    .nav-icon-pop {
+      animation: navIconPop 0.34s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    @keyframes navIconPop {
+      0% { transform: scale(0.82) translateY(2px); }
+      60% { transform: scale(1.18) translateY(-2px); }
+      100% { transform: scale(1) translateY(0); }
+    }
+
+    /* Modal Backdrop & Bottom Sheet Entrance */
+    .modal-backdrop-enter {
+      animation: backdropFadeIn 0.22s ease-out forwards;
+    }
+    .modal-sheet-enter {
+      animation: sheetSlideUp 0.32s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    @keyframes backdropFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes sheetSlideUp {
+      from {
+        opacity: 0;
+        transform: translateY(28px) scale(0.97);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    /* List Item & Toast Entrance */
+    .list-item-enter {
+      animation: listItemIn 0.3s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+    }
+    @keyframes listItemIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .toast-enter {
+      animation: toastPopIn 0.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    @keyframes toastPopIn {
+      from {
+        opacity: 0;
+        transform: translate(-50%, -12px) scale(0.92);
+      }
+      to {
+        opacity: 1;
+        transform: translate(-50%, 0) scale(1);
+      }
+    }
+  </style>
+</head>
+<body class="bg-slate-100 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-screen flex justify-center selection:bg-indigo-500 selection:text-white">
+
+  <!-- Centered Mobile App Shell (Opens Instantly + Syncs Quietly in Background) -->
+  <div id="app-shell" class="app-shell-enter w-full max-w-md bg-slate-50 dark:bg-slate-900 min-h-screen shadow-2xl shadow-slate-900/10 dark:shadow-black/60 relative flex flex-col border-x border-slate-200/70 dark:border-slate-800/80">
+
+    <!-- Top App Header -->
+    <header class="sticky top-0 z-20 bg-slate-50/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200/70 dark:border-slate-800/80 px-4 pt-3.5 pb-2.5 space-y-2.5">
+      <div class="flex items-center justify-between gap-2">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <div class="w-9 h-9 rounded-2xl bg-gradient-to-br from-indigo-600 to-violet-600 flex items-center justify-center text-white font-extrabold text-xs tracking-tighter shadow-md shadow-indigo-500/25 shrink-0">
+            A&amp;A
+          </div>
+          <div class="min-w-0">
+            <div class="flex items-center gap-1.5">
+              <h1 class="text-sm font-bold tracking-tight leading-none truncate">Adlan &amp; Azfa’s Funds</h1>
+            </div>
+            <div class="flex items-center gap-1.5 mt-1">
+              <span id="header-month-label" class="px-1.5 py-0.5 rounded-md text-[10px] font-semibold bg-indigo-50 dark:bg-indigo-500/15 text-indigo-600 dark:text-indigo-300 leading-none">Nov 2026</span>
+              <span id="sync-status-badge" class="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 leading-none">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span id="sync-status-text">Synced</span>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Header Quick Controls (Sync + Guide + Theme + Settings) -->
+        <div class="flex items-center gap-1.5 shrink-0">
+          <button id="header-sync-btn" onclick="manualSyncNow()" aria-label="Sync Now" title="Sync with Private GitHub Vault" class="p-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition">
+            <i id="header-sync-icon" data-lucide="refresh-cw" class="w-4 h-4"></i>
+          </button>
+
+          <button id="tour-target-guide" onclick="openGuideModal(0)" aria-label="First-Time User Guide" class="px-2.5 py-2 rounded-xl bg-indigo-50 dark:bg-indigo-500/15 border border-indigo-200/80 dark:border-indigo-500/30 text-indigo-600 dark:text-indigo-300 hover:bg-indigo-100 dark:hover:bg-indigo-500/25 text-[11px] font-bold flex items-center gap-1 transition">
+            <i data-lucide="help-circle" class="w-3.5 h-3.5"></i>
+            <span>Guide</span>
+          </button>
+
+          <button onclick="toggleDarkMode()" aria-label="Toggle Theme" class="p-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition">
+            <i id="theme-icon" data-lucide="moon" class="w-4 h-4"></i>
+          </button>
+
+          <button onclick="openSettingsModal()" aria-label="Settings" class="p-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition">
+            <i data-lucide="settings" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Active Phone Profile Switcher (Adlan vs Azfa) -->
+      <div id="tour-target-profile" class="flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-2xl bg-white dark:bg-slate-800/90 border border-slate-200/80 dark:border-slate-700/80">
+        <span class="text-[11px] font-semibold text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+          <i data-lucide="users" class="w-3.5 h-3.5 text-indigo-500"></i>
+          <span>Logging as:</span>
+        </span>
+        <div class="flex items-center gap-1 bg-slate-100 dark:bg-slate-900 p-0.5 rounded-xl">
+          <button type="button" id="active-user-adlan" onclick="setActiveMember('Adlan')" class="px-3 py-1 rounded-lg text-[11px] font-extrabold bg-blue-600 text-white shadow-xs transition">
+            Adlan
+          </button>
+          <button type="button" id="active-user-azfa" onclick="setActiveMember('Azfa')" class="px-3 py-1 rounded-lg text-[11px] font-bold text-slate-500 dark:text-slate-400 transition">
+            Azfa
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Scrollable Content Area -->
+    <main class="flex-1 overflow-y-auto px-4 pt-4 pb-28 space-y-5">
+
+      <!-- ==================== TAB 1: HOME DASHBOARD ==================== -->
+      <section id="tab-home" class="tab-panel space-y-5">
+        <!-- Setup Prompt Banner (Shown until GitHub Vault Token is saved on this phone) -->
+        <div id="github-setup-banner" class="hidden rounded-2xl bg-amber-50 dark:bg-amber-500/15 border border-amber-200 dark:border-amber-500/30 p-3.5 flex items-center justify-between gap-3">
+          <div class="min-w-0">
+            <p class="text-xs font-extrabold text-amber-900 dark:text-amber-200">Connect Private GitHub Vault</p>
+            <p class="text-[11px] text-amber-800/80 dark:text-amber-300/80 mt-0.5">Add your private repo &amp; token once on this phone to sync with your partner.</p>
+          </div>
+          <button onclick="openSettingsModal()" class="px-3 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-extrabold shrink-0 transition">
+            Setup
+          </button>
+        </div>
+
+        <!-- Hero Balance & Safe-to-Spend Card -->
+        <div class="stagger-item stagger-1 rounded-3xl bg-gradient-to-br from-indigo-600 via-indigo-700 to-violet-800 text-white p-5 shadow-xl shadow-indigo-600/20 relative overflow-hidden">
+          <div class="absolute -right-8 -top-8 w-36 h-36 rounded-full bg-white/10 blur-xl pointer-events-none"></div>
+          <div class="absolute -left-8 -bottom-10 w-32 h-32 rounded-full bg-violet-400/20 blur-xl pointer-events-none"></div>
+
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-medium text-indigo-100 uppercase tracking-wider">Combined Household Balance</span>
+            <button id="tour-target-adjust" onclick="openSettingsModal()" class="text-[11px] font-semibold bg-white/15 hover:bg-white/25 px-2.5 py-1 rounded-full transition flex items-center gap-1">
+              <i data-lucide="sliders-horizontal" class="w-3 h-3"></i> Adjust
+            </button>
+          </div>
+          <div id="home-total-balance" class="text-3xl font-extrabold tracking-tight mt-1">MYR 0.00</div>
+
+          <!-- Safe-to-Spend Highlight Box -->
+          <div id="tour-target-safespend" class="mt-4 p-3.5 rounded-2xl bg-white/12 backdrop-blur-sm border border-white/15 flex items-center justify-between">
+            <div>
+              <div class="flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span class="text-xs font-semibold text-indigo-100">Safe-to-Spend</span>
+              </div>
+              <p class="text-[10px] text-indigo-200 mt-0.5">Balance minus unpaid bills</p>
+            </div>
+            <div id="home-safe-spend" class="text-lg font-extrabold text-emerald-300">MYR 0.00</div>
+          </div>
+
+          <!-- Mini Income / Expense Row -->
+          <div class="grid grid-cols-2 gap-2.5 mt-3.5 pt-3.5 border-t border-white/15 text-xs">
+            <div class="flex items-center gap-2">
+              <div class="w-7 h-7 rounded-xl bg-emerald-400/20 text-emerald-300 flex items-center justify-center">
+                <i data-lucide="arrow-down-left" class="w-4 h-4"></i>
+              </div>
+              <div>
+                <p class="text-[10px] text-indigo-200">Combined Income</p>
+                <p id="home-total-income" class="font-bold">MYR 0.00</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="w-7 h-7 rounded-xl bg-rose-400/20 text-rose-300 flex items-center justify-center">
+                <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+              </div>
+              <div>
+                <p class="text-[10px] text-indigo-200">Combined Outflow</p>
+                <p id="home-total-outflow" class="font-bold">MYR 0.00</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Adlan & Azfa Contribution Split Card -->
+        <div class="stagger-item stagger-2 grid grid-cols-2 gap-2.5">
+          <div class="rounded-3xl bg-white dark:bg-slate-800/90 border border-blue-200/70 dark:border-blue-500/25 p-3.5 shadow-xs transition-transform duration-200 hover:-translate-y-0.5">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-blue-50 dark:bg-blue-500/20 text-blue-600 dark:text-blue-300">Adlan</span>
+              <i data-lucide="user" class="w-3.5 h-3.5 text-blue-400"></i>
+            </div>
+            <div class="space-y-0.5">
+              <p class="text-[10px] text-slate-400">In: <strong id="home-adlan-in" class="text-emerald-600 dark:text-emerald-400">MYR 0.00</strong></p>
+              <p class="text-[10px] text-slate-400">Out: <strong id="home-adlan-out" class="text-slate-700 dark:text-slate-200">MYR 0.00</strong></p>
+            </div>
+          </div>
+
+          <div class="rounded-3xl bg-white dark:bg-slate-800/90 border border-[#ffb3da]/70 dark:border-[#ff4da6]/25 p-3.5 shadow-xs transition-transform duration-200 hover:-translate-y-0.5">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-[#fff0f7] dark:bg-[#ff4da6]/20 text-[#ff2a93] dark:text-[#ff85c4]">Azfa</span>
+              <i data-lucide="heart" class="w-3.5 h-3.5 text-[#ff5cae]"></i>
+            </div>
+            <div class="space-y-0.5">
+              <p class="text-[10px] text-slate-400">In: <strong id="home-azfa-in" class="text-emerald-600 dark:text-emerald-400">MYR 0.00</strong></p>
+              <p class="text-[10px] text-slate-400">Out: <strong id="home-azfa-out" class="text-slate-700 dark:text-slate-200">MYR 0.00</strong></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Monthly Commitments Progress Card -->
+        <div class="stagger-item stagger-3 rounded-3xl bg-white dark:bg-slate-800/90 border border-slate-200/80 dark:border-slate-700/80 p-4 shadow-sm">
+          <div class="flex items-center justify-between mb-2">
+            <div>
+              <h2 class="text-sm font-bold">Monthly Commitments</h2>
+              <p id="home-commit-subtitle" class="text-xs text-slate-500 dark:text-slate-400">0 of 0 settled</p>
+            </div>
+            <span id="home-commit-pct" class="text-xs font-extrabold px-2.5 py-1 rounded-full bg-indigo-50 dark:bg-indigo-500/15 text-indigo-600 dark:text-indigo-300">0%</span>
+          </div>
+
+          <div class="w-full h-2.5 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+            <div id="home-commit-bar" class="h-full bg-gradient-to-r from-indigo-500 to-emerald-500 rounded-full transition-all duration-500" style="width: 0%"></div>
+          </div>
+
+          <div class="flex items-center justify-between mt-3 text-xs">
+            <span class="text-slate-500 dark:text-slate-400">Paid: <strong id="home-commit-paid" class="text-emerald-600 dark:text-emerald-400">MYR 0.00</strong></span>
+            <span class="text-slate-500 dark:text-slate-400">Remaining: <strong id="home-commit-unpaid" class="text-amber-600 dark:text-amber-400">MYR 0.00</strong></span>
+          </div>
+        </div>
+
+        <!-- Upcoming Unpaid Commitments -->
+        <div class="stagger-item stagger-4 space-y-2.5">
+          <div class="flex items-center justify-between px-1">
+            <h2 class="text-sm font-bold">Upcoming Bills</h2>
+            <button onclick="switchTab('commitments')" class="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">Manage All</button>
+          </div>
+          <div id="home-upcoming-list" class="space-y-2.5"></div>
+        </div>
+
+        <!-- Recent Transactions Preview -->
+        <div class="stagger-item stagger-5 space-y-2.5">
+          <div class="flex items-center justify-between px-1">
+            <h2 class="text-sm font-bold">Recent Activity</h2>
+            <button onclick="switchTab('activity')" class="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">View All</button>
+          </div>
+          <div id="home-recent-list" class="space-y-2"></div>
+        </div>
+      </section>
+
+      <!-- ==================== TAB 2: COMMITMENTS TRACKER ==================== -->
+      <section id="tab-commitments" class="tab-panel hidden space-y-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-lg font-extrabold tracking-tight">Commitments</h2>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Fixed bills, loans &amp; recurring obligations</p>
+          </div>
+          <button id="tour-target-addbill" onclick="openCommitmentDrawer()" class="px-3.5 py-2 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-md shadow-indigo-500/20 flex items-center gap-1.5 transition">
+            <i data-lucide="plus" class="w-4 h-4"></i> Add Bill
+          </button>
+        </div>
+
+        <!-- Filter Pills -->
+        <div class="flex items-center gap-2 overflow-x-auto pb-1">
+          <button onclick="setCommitmentFilter('all')" id="cfilter-all" class="cfilter-btn px-3.5 py-1.5 rounded-xl text-xs font-bold bg-indigo-600 text-white transition shrink-0">All</button>
+          <button onclick="setCommitmentFilter('unpaid')" id="cfilter-unpaid" class="cfilter-btn px-3.5 py-1.5 rounded-xl text-xs font-bold bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 transition shrink-0">Unpaid</button>
+          <button onclick="setCommitmentFilter('paid')" id="cfilter-paid" class="cfilter-btn px-3.5 py-1.5 rounded-xl text-xs font-bold bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 transition shrink-0">Paid</button>
+          <button onclick="setCommitmentFilter('Adlan')" id="cfilter-Adlan" class="cfilter-btn px-3.5 py-1.5 rounded-xl text-xs font-bold bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 transition shrink-0">Adlan</button>
+          <button onclick="setCommitmentFilter('Azfa')" id="cfilter-Azfa" class="cfilter-btn px-3.5 py-1.5 rounded-xl text-xs font-bold bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 transition shrink-0">Azfa</button>
+        </div>
+
+        <!-- Commitment Cards Container -->
+        <div id="commitments-list" class="space-y-3"></div>
+      </section>
+
+      <!-- ==================== TAB 3: ACTIVITY LOG ==================== -->
+      <section id="tab-activity" class="tab-panel hidden space-y-4">
+        <div>
+          <h2 class="text-lg font-extrabold tracking-tight">Activity Log</h2>
+          <p class="text-xs text-slate-500 dark:text-slate-400">Search and filter all cash inflows &amp; outflows</p>
+        </div>
+
+        <!-- Search & Filter Bar -->
+        <div class="space-y-2.5">
+          <div class="relative">
+            <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+            <input id="activity-search" type="text" oninput="renderActivity()" placeholder="Search title or category..." class="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+          </div>
+
+          <div class="flex items-center gap-1.5 overflow-x-auto pb-1">
+            <button onclick="setActivityFilter('all')" id="afilter-all" class="afilter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-indigo-600 text-white shrink-0">All</button>
+            <button onclick="setActivityFilter('Adlan')" id="afilter-Adlan" class="afilter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 shrink-0">Adlan</button>
+            <button onclick="setActivityFilter('Azfa')" id="afilter-Azfa" class="afilter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 shrink-0">Azfa</button>
+            <button onclick="setActivityFilter('income')" id="afilter-income" class="afilter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 shrink-0">Income</button>
+            <button onclick="setActivityFilter('expense')" id="afilter-expense" class="afilter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 shrink-0">Expense</button>
+            <button onclick="setActivityFilter('commitment')" id="afilter-commitment" class="afilter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 shrink-0">Bills</button>
+          </div>
+        </div>
+
+        <!-- Transactions List -->
+        <div id="activity-list" class="space-y-2.5"></div>
+      </section>
+
+      <!-- ==================== TAB 4: FINANCIAL INSIGHTS ==================== -->
+      <section id="tab-insights" class="tab-panel hidden space-y-4">
+        <div>
+          <h2 class="text-lg font-extrabold tracking-tight">Insights &amp; Health</h2>
+          <p class="text-xs text-slate-500 dark:text-slate-400">Commitment ratio &amp; cash flow breakdown</p>
+        </div>
+
+        <!-- Commitment-to-Income Ratio Meter -->
+        <div class="rounded-3xl bg-white dark:bg-slate-800/90 border border-slate-200/80 dark:border-slate-700/80 p-4 shadow-sm space-y-3">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="text-sm font-bold">Commitment-to-Income Ratio</h3>
+              <p class="text-[11px] text-slate-500 dark:text-slate-400">Recommended cap: &le; 50% of monthly income</p>
+            </div>
+            <span id="insight-ratio-badge" class="px-2.5 py-1 rounded-full text-xs font-extrabold bg-emerald-50 dark:bg-emerald-500/15 text-emerald-600 dark:text-emerald-400">0%</span>
+          </div>
+
+          <div class="relative w-full h-3 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+            <div id="insight-ratio-bar" class="h-full bg-emerald-500 rounded-full transition-all duration-500" style="width: 0%"></div>
+            <!-- 50% benchmark marker -->
+            <div class="absolute top-0 bottom-0 left-1/2 w-0.5 bg-slate-900/40 dark:bg-white/50"></div>
+          </div>
+
+          <p id="insight-ratio-note" class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed"></p>
+        </div>
+
+        <!-- Cash Flow Bar Chart -->
+        <div class="rounded-3xl bg-white dark:bg-slate-800/90 border border-slate-200/80 dark:border-slate-700/80 p-4 shadow-sm">
+          <h3 class="text-sm font-bold mb-3">Cash Flow Overview</h3>
+          <div class="h-48 w-full">
+            <canvas id="cashflow-chart"></canvas>
+          </div>
+        </div>
+
+        <!-- Outflow Breakdown Doughnut Chart -->
+        <div class="rounded-3xl bg-white dark:bg-slate-800/90 border border-slate-200/80 dark:border-slate-700/80 p-4 shadow-sm">
+          <h3 class="text-sm font-bold mb-3">Outflow by Category</h3>
+          <div class="h-52 w-full flex items-center justify-center">
+            <canvas id="category-chart"></canvas>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Fixed Bottom Navigation Bar with Central Floating Action Button -->
+    <nav class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md z-30 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200/80 dark:border-slate-800 px-3 pt-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] flex items-center justify-around">
+      <button onclick="switchTab('home')" id="nav-home" class="nav-btn flex flex-col items-center gap-1 py-1 px-3 rounded-2xl text-indigo-600 dark:text-indigo-400 transition">
+        <i data-lucide="home" class="w-5 h-5"></i>
+        <span class="text-[10px] font-bold">Home</span>
+      </button>
+
+      <button onclick="switchTab('commitments')" id="nav-commitments" class="nav-btn flex flex-col items-center gap-1 py-1 px-3 rounded-2xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition">
+        <i data-lucide="calendar-check-2" class="w-5 h-5"></i>
+        <span class="text-[10px] font-semibold">Bills</span>
+      </button>
+
+      <!-- Central FAB -->
+      <button id="tour-target-fab" onclick="openTransactionModal()" aria-label="Add Transaction" class="-mt-7 w-14 h-14 rounded-full bg-gradient-to-tr from-indigo-600 to-violet-600 text-white shadow-lg shadow-indigo-600/35 flex items-center justify-center hover:scale-105 active:scale-95 transition">
+        <i data-lucide="plus" class="w-7 h-7"></i>
+      </button>
+
+      <button onclick="switchTab('activity')" id="nav-activity" class="nav-btn flex flex-col items-center gap-1 py-1 px-3 rounded-2xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition">
+        <i data-lucide="arrow-left-right" class="w-5 h-5"></i>
+        <span class="text-[10px] font-semibold">Activity</span>
+      </button>
+
+      <button onclick="switchTab('insights')" id="nav-insights" class="nav-btn flex flex-col items-center gap-1 py-1 px-3 rounded-2xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition">
+        <i data-lucide="pie-chart" class="w-5 h-5"></i>
+        <span class="text-[10px] font-semibold">Insights</span>
+      </button>
+    </nav>
+
+    <!-- ==================== MODAL 1: LOG TRANSACTION ==================== -->
+    <div id="tx-modal" onclick="if(event.target === this) closeTransactionModal()" class="fixed inset-0 z-40 hidden items-end sm:items-center justify-center bg-slate-950/60 backdrop-blur-xs p-0 sm:p-4">
+      <div class="modal-sheet w-full max-w-md bg-white dark:bg-slate-900 rounded-t-3xl sm:rounded-3xl p-5 border-t sm:border border-slate-200 dark:border-slate-800 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+        <div class="flex items-center justify-between">
+          <h3 class="text-base font-extrabold">Log Transaction</h3>
+          <button type="button" onclick="closeTransactionModal()" class="p-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-500">
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+        <form id="tx-form" onsubmit="handleTransactionSubmit(event)" class="space-y-3.5">
+          <!-- Type Switcher -->
+          <div class="grid grid-cols-2 gap-2 p-1 rounded-2xl bg-slate-100 dark:bg-slate-800">
+            <button type="button" id="tx-type-expense" onclick="setTxType('expense')" class="py-2 rounded-xl text-xs font-bold bg-white dark:bg-slate-700 text-rose-600 dark:text-rose-400 shadow-xs transition">Expense</button>
+            <button type="button" id="tx-type-income" onclick="setTxType('income')" class="py-2 rounded-xl text-xs font-bold text-slate-500 dark:text-slate-400 transition">Income</button>
+          </div>
+          <input type="hidden" id="tx-type-input" value="expense" />
+
+          <!-- Who Logged / Paid Switcher -->
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 mb-1">Whose Transaction?</label>
+            <div class="grid grid-cols-2 gap-2 p-1 rounded-2xl bg-slate-100 dark:bg-slate-800">
+              <button type="button" id="tx-member-Adlan" onclick="setTxMember('Adlan')" class="py-1.5 rounded-xl text-xs font-extrabold bg-blue-600 text-white shadow-xs transition">Adlan</button>
+              <button type="button" id="tx-member-Azfa" onclick="setTxMember('Azfa')" class="py-1.5 rounded-xl text-xs font-bold text-slate-500 dark:text-slate-400 transition">Azfa</button>
+            </div>
+            <input type="hidden" id="tx-member-input" value="Adlan" />
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 mb-1">Amount (MYR)</label>
+            <input id="tx-amount" type="number" step="0.01" min="0.01" required placeholder="0.00" class="w-full px-3.5 py-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-base font-extrabold focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 mb-1">Title / Description</label>
+            <input id="tx-title" type="text" required placeholder="e.g., Groceries, Monthly Salary" class="w-full px-3.5 py-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+          </div>
+
+          <div class="grid grid-cols-2 gap-2.5">
+            <div>
+              <label class="block text-xs font-semibold text-slate-500 mb-1">Category</label>
+              <select id="tx-category" class="w-full px-3 py-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <option value="Food & Dining">Food &amp; Dining</option>
+                <option value="Groceries">Groceries</option>
+                <option value="Transport & Fuel">Transport &amp; Fuel</option>
+                <option value="Shopping">Shopping</option>
+                <option value="Utilities & Bills">Utilities &amp; Bills</option>
+                <option value="Healthcare">Healthcare</option>
+                <option value="Family & Home">Family &amp; Home</option>
+                <option value="Entertainment">Entertainment</option>
+                <option value="Salary">Salary</option>
+                <option value="Bonus & Allowance">Bonus &amp; Allowance</option>
+                <option value="Side Income">Side Income</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-500 mb-1">Date</label>
+              <input id="tx-date" type="date" required class="w-full px-3 py-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+            </div>
+          </div>
+
+          <button type="submit" class="w-full py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-extrabold shadow-lg shadow-indigo-600/25 transition">Save Transaction</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ==================== MODAL 2: ADD / EDIT COMMITMENT ==================== -->
+    <div id="commitment-modal" onclick="if(event.target === this) closeCommitmentDrawer()" class="fixed inset-0 z-40 hidden items-end sm:items-center justify-center bg-slate-950/60 backdrop-blur-xs p-0 sm:p-4">
+      <div class="modal-sheet w-full max-w-md bg-white dark:bg-slate-900 rounded-t-3xl sm:rounded-3xl p-5 border-t sm:border border-slate-200 dark:border-slate-800 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+        <div class="flex items-center justify-between">
+          <h3 id="commitment-modal-title" class="text-base font-extrabold">New Shared Commitment</h3>
+          <button type="button" onclick="closeCommitmentDrawer()" class="p-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-500">
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+        <form id="commitment-form" onsubmit="handleCommitmentSubmit(event)" class="space-y-3.5">
+          <input type="hidden" id="comm-edit-id" value="" />
+
+          <!-- Owner Assignment -->
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 mb-1">Assigned To</label>
+            <div class="grid grid-cols-3 gap-1.5 p-1 rounded-2xl bg-slate-100 dark:bg-slate-800">
+              <button type="button" id="comm-owner-Joint" onclick="setCommOwner('Joint')" class="py-1.5 rounded-xl text-xs font-extrabold bg-violet-600 text-white shadow-xs transition">Joint</button>
+              <button type="button" id="comm-owner-Adlan" onclick="setCommOwner('Adlan')" class="py-1.5 rounded-xl text-xs font-bold text-slate-500 dark:text-slate-400 transition">Adlan</button>
+              <button type="button" id="comm-owner-Azfa" onclick="setCommOwner('Azfa')" class="py-1.5 rounded-xl text-xs font-bold text-slate-500 dark:text-slate-400 transition">Azfa</button>
+            </div>
+            <input type="hidden" id="comm-owner-input" value="Joint" />
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 mb-1">Bill / Commitment Name</label>
+            <input id="comm-name" type="text" required placeholder="e.g., House Mortgage, Unifi, Car Loan" class="w-full px-3.5 py-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+          </div>
+
+          <div class="grid grid-cols-2 gap-2.5">
+            <div>
+              <label class="block text-xs font-semibold text-slate-500 mb-1">Monthly Amount (MYR)</label>
+              <input id="comm-amount" type="number" step="0.01" min="0.01" required placeholder="0.00" class="w-full px-3.5 py-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm font-extrabold focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-500 mb-1">Due Day (1–31)</label>
+              <input id="comm-due-day" type="number" min="1" max="31" required placeholder="15" value="1" class="w-full px-3.5 py-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm font-extrabold focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2.5">
+            <div>
+              <label class="block text-xs font-semibold text-slate-500 mb-1">Category</label>
+              <select id="comm-category" class="w-full px-3 py-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <option value="Housing & Rent">Housing &amp; Rent</option>
+                <option value="Auto & Loans">Auto &amp; Loans</option>
+                <option value="Utilities & Telco">Utilities &amp; Telco</option>
+                <option value="Insurance">Insurance</option>
+                <option value="Subscriptions">Subscriptions</option>
+                <option value="Family & Education">Family &amp; Education</option>
+              </select>
+            </div>
+            <div class="flex items-end pb-1">
+              <label class="flex items-center gap-2 cursor-pointer text-xs font-semibold text-slate-700 dark:text-slate-300">
+                <input id="comm-autodebit" type="checkbox" class="w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500" />
+                Auto-Debit
+              </label>
+            </div>
+          </div>
+
+          <!-- Optional Loan / Installment Tenure Tracker -->
+          <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200/80 dark:border-slate-700 space-y-2.5">
+            <label class="flex items-center justify-between cursor-pointer">
+              <span class="text-xs font-bold">Track Loan / Installment Tenure</span>
+              <input id="comm-has-installment" type="checkbox" onchange="toggleInstallmentFields()" class="w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500" />
+            </label>
+
+            <div id="installment-fields" class="hidden grid grid-cols-2 gap-2.5 pt-1">
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-500 mb-1">Current Month</label>
+                <input id="comm-inst-current" type="number" min="1" value="1" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs font-bold" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-500 mb-1">Total Months</label>
+                <input id="comm-inst-total" type="number" min="1" value="12" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs font-bold" />
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="w-full py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-extrabold shadow-lg shadow-indigo-600/25 transition">Save Commitment</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ==================== MODAL 3: SETTINGS & DATA ==================== -->
+    <div id="settings-modal" onclick="if(event.target === this) closeSettingsModal()" class="fixed inset-0 z-40 hidden items-end sm:items-center justify-center bg-slate-950/60 backdrop-blur-xs p-0 sm:p-4">
+      <div class="modal-sheet w-full max-w-md bg-white dark:bg-slate-900 rounded-t-3xl sm:rounded-3xl p-5 border-t sm:border border-slate-200 dark:border-slate-800 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+        <div class="flex items-center justify-between">
+          <h3 class="text-base font-extrabold">Couple Sync &amp; Settings</h3>
+          <button onclick="closeSettingsModal()" class="p-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-500">
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+        <div class="space-y-3.5">
+          <!-- Private GitHub Repo Vault Configuration -->
+          <div class="p-3.5 rounded-2xl bg-indigo-50/80 dark:bg-indigo-500/10 border border-indigo-200/80 dark:border-indigo-500/25 space-y-2.5">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-extrabold text-indigo-900 dark:text-indigo-200 flex items-center gap-1.5">
+                <i data-lucide="lock" class="w-3.5 h-3.5 text-indigo-600"></i>
+                Private GitHub Vault Sync
+              </span>
+              <span id="settings-sync-pill" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 dark:bg-amber-500/20 text-amber-800 dark:text-amber-300">Not Connected</span>
+            </div>
+            <p class="text-[11px] text-slate-600 dark:text-slate-300 leading-relaxed">
+              Your finances are stored in a <strong>Private</strong> GitHub repository. Your token stays strictly inside this phone’s local storage and is never uploaded to public code.
+            </p>
+
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">GitHub Username</label>
+                <input id="settings-gh-owner" type="text" placeholder="AdlanAkmal21" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-800 border border-indigo-200 dark:border-slate-700 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+              </div>
+              <div>
+                <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Private Repo Name</label>
+                <input id="settings-gh-repo" type="text" placeholder="adrina-vault" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-800 border border-indigo-200 dark:border-slate-700 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Personal Access Token (Fine-Grained)</label>
+              <div class="flex gap-1.5">
+                <input id="settings-gh-token" type="password" placeholder="github_pat_..." class="flex-1 px-3 py-2 rounded-xl bg-white dark:bg-slate-800 border border-indigo-200 dark:border-slate-700 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                <button type="button" onclick="toggleTokenVisibility()" aria-label="Show or hide token" class="px-2.5 py-2 rounded-xl bg-white dark:bg-slate-800 border border-indigo-200 dark:border-slate-700 text-slate-500 hover:text-slate-700 dark:hover:text-slate-200 transition">
+                  <i id="token-eye-icon" data-lucide="eye" class="w-4 h-4"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2 pt-0.5">
+              <button type="button" onclick="saveAndConnectGitHub()" class="flex-1 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-extrabold transition">
+                Save &amp; Sync Now
+              </button>
+              <button type="button" id="disconnect-gh-btn" onclick="disconnectGitHubVault()" class="hidden px-3 py-2 rounded-xl bg-slate-200/80 dark:bg-slate-800 hover:bg-rose-100 dark:hover:bg-rose-500/20 text-slate-600 dark:text-slate-300 hover:text-rose-600 text-xs font-bold transition">
+                Unlink
+              </button>
+            </div>
+          </div>
+
+          <!-- Opening Balance -->
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 mb-1">Opening / Combined Base Balance (MYR)</label>
+            <div class="flex gap-2">
+              <input id="settings-opening-balance" type="number" step="0.01" class="flex-1 px-3.5 py-2 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+              <button onclick="updateOpeningBalance()" class="px-4 py-2 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition">Update</button>
+            </div>
+          </div>
+
+          <!-- Native App Icon Generator (For Fullscreen WebAPK Install) -->
+          <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200/80 dark:border-slate-700 flex items-center justify-between gap-2.5">
+            <div class="min-w-0">
+              <p class="text-xs font-extrabold">Fullscreen App Icons (PNG)</p>
+              <p class="text-[10px] text-slate-500 dark:text-slate-400">Generate <code>icon-192.png</code> &amp; <code>icon-512.png</code> for your GitHub repo so Android installs without the Chrome bar.</p>
+            </div>
+            <button type="button" onclick="downloadAppIcons()" class="px-3 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-[11px] font-extrabold shrink-0 flex items-center gap-1 transition">
+              <i data-lucide="image" class="w-3.5 h-3.5"></i> Icons
+            </button>
+          </div>
+
+          <!-- Export Buttons -->
+          <div class="grid grid-cols-2 gap-2.5 pt-1">
+            <button onclick="exportDataCSV()" class="py-2.5 px-3 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-xs font-bold flex items-center justify-center gap-1.5 transition">
+              <i data-lucide="file-spreadsheet" class="w-4 h-4 text-emerald-600"></i> Export CSV
+            </button>
+            <button onclick="exportDataJSON()" class="py-2.5 px-3 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-xs font-bold flex items-center justify-center gap-1.5 transition">
+              <i data-lucide="download" class="w-4 h-4 text-indigo-600"></i> Export JSON
+            </button>
+          </div>
+
+          <!-- Reset / Clear Actions -->
+          <div class="space-y-2 pt-1">
+            <button onclick="resetToDemoData()" class="w-full py-2.5 px-4 rounded-2xl bg-amber-50 dark:bg-amber-500/15 text-amber-700 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-500/25 text-xs font-bold flex items-center justify-center gap-2 transition">
+              <i data-lucide="rotate-ccw" class="w-4 h-4"></i> Load Sample Demo Data
+            </button>
+            <button id="clear-data-btn" onclick="handleClearAllDataClick()" class="w-full py-2.5 px-4 rounded-2xl bg-rose-50 dark:bg-rose-500/15 text-rose-600 dark:text-rose-400 hover:bg-rose-100 dark:hover:bg-rose-500/25 text-xs font-bold flex items-center justify-center gap-2 transition">
+              <i data-lucide="trash-2" class="w-4 h-4"></i> <span id="clear-data-label">Clear All Data</span>
+            </button>
+          </div>
+
+          <!-- About Section -->
+          <div class="pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400">
+            <div class="flex items-center gap-2">
+              <div class="w-6 h-6 rounded-lg bg-indigo-600 text-white flex items-center justify-center font-extrabold text-[9px]">
+                A&amp;A
+              </div>
+              <div>
+                <p class="font-bold text-slate-700 dark:text-slate-200 leading-tight">Adlan &amp; Azfa’s Funds</p>
+                <p class="text-[10px] text-slate-400">MYR Shared Household PWA</p>
+              </div>
+            </div>
+            <span class="px-2 py-0.5 rounded-md bg-emerald-50 dark:bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 font-semibold text-[10px]">Private GitHub Vault</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== INTERACTIVE SPOTLIGHT WALKTHROUGH ==================== -->
+    <div id="guide-overlay" class="fixed inset-0 z-50 hidden">
+      <!-- Clickable Dimmed Backdrop -->
+      <div onclick="closeGuideModal()" class="fixed inset-0 bg-slate-950/60 transition-opacity"></div>
+
+      <!-- Glowing Spotlight Ring Positioned Over Target Element -->
+      <div id="guide-spotlight" class="fixed pointer-events-none rounded-2xl ring-4 ring-amber-400 shadow-[0_0_0_9999px_rgba(2,6,23,0.68),0_0_24px_rgba(251,191,36,0.75)] transition-all duration-300 z-10"></div>
+
+      <!-- Floating Callout Card -->
+      <div id="guide-card" class="fixed z-20 w-[calc(100%-2rem)] max-w-[25rem] left-1/2 -translate-x-1/2 bg-white dark:bg-slate-900 rounded-3xl p-4 border border-slate-200 dark:border-slate-700 shadow-2xl space-y-3 transition-all duration-300">
+        <!-- Directional Arrow Pointer -->
+        <div id="guide-arrow" class="w-3.5 h-3.5 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 rotate-45 absolute"></div>
+
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-1.5">
+            <span id="guide-step-badge" class="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-indigo-50 dark:bg-indigo-500/15 text-indigo-600 dark:text-indigo-300">Step 1 of 6</span>
+            <span id="guide-target-badge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 dark:bg-amber-500/20 text-amber-800 dark:text-amber-300">Highlighted on screen</span>
+          </div>
+          <button onclick="closeGuideModal()" class="p-1 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 transition" aria-label="Close Guide">
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+        <div class="flex items-start gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-indigo-600 to-violet-600 text-white flex items-center justify-center shrink-0 shadow-md shadow-indigo-500/20 mt-0.5">
+            <i id="guide-icon" data-lucide="sparkles" class="w-5 h-5"></i>
+          </div>
+          <div class="min-w-0">
+            <h3 id="guide-title" class="text-sm font-extrabold tracking-tight">Safe-to-Spend</h3>
+            <p id="guide-desc" class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mt-1"></p>
+          </div>
+        </div>
+
+        <!-- Step Progress Dots & Buttons -->
+        <div class="flex items-center justify-between gap-2 pt-2 border-t border-slate-100 dark:border-slate-800">
+          <div id="guide-dots" class="flex items-center gap-1"></div>
+          <div class="flex items-center gap-2">
+            <button id="guide-prev-btn" onclick="prevGuideStep()" class="px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-bold transition">
+              Skip
+            </button>
+            <button id="guide-next-btn" onclick="nextGuideStep()" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-extrabold shadow-md shadow-indigo-600/25 transition">
+              Next
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Custom Non-Blocking Toast Banner -->
+    <div id="toast-banner" class="fixed top-16 left-1/2 -translate-x-1/2 z-50 hidden items-center gap-2 px-4 py-2.5 rounded-2xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs font-bold shadow-xl transition-all">
+      <span id="toast-message">Saved</span>
+    </div>
+  </div>
+
+  <script>
+    /* ==========================================================================
+       STATE MANAGEMENT & PRIVATE GITHUB REPOSITORY SYNC ENGINE
+       ========================================================================== */
+    const FIXED_CURRENCY = 'MYR';
+    const STORAGE_KEYS = {
+      OWNER: 'adrina_gh_owner',
+      REPO: 'adrina_gh_repo',
+      PATH: 'adrina_gh_path',
+      TOKEN: 'adrina_gh_token',
+      MEMBER: 'adrina_active_member',
+      DARK: 'adrina_dark_mode',
+      LOCAL_CACHE: 'adrina_local_snapshot'
+    };
+
+    const GUIDE_STEPS = [
+      {
+        tab: 'home',
+        targetId: 'tour-target-profile',
+        icon: 'users',
+        title: '1. Pick Who Is Using the Phone',
+        desc: 'Select "Adlan" on your phone and "Azfa" on your wife’s phone so each device remembers whose profile to use.'
+      },
+      {
+        tab: 'home',
+        targetId: 'tour-target-adjust',
+        icon: 'lock',
+        title: '2. Connect Vault & Opening Balance',
+        desc: 'Tap "Adjust" to link your Private GitHub Vault token once on each phone and set your combined MYR starting balance.'
+      },
+      {
+        tab: 'home',
+        targetId: 'nav-commitments',
+        icon: 'calendar-check-2',
+        title: '3. Open Shared Bills Tab',
+        desc: 'Tap "Bills" to view and manage your joint household commitments as well as individual bills.'
+      },
+      {
+        tab: 'commitments',
+        targetId: 'tour-target-addbill',
+        icon: 'plus-square',
+        title: '4. Add Joint or Personal Bills',
+        desc: 'Tap "+ Add Bill", assign it to Joint, Adlan, or Azfa, and whenever either of you marks it Paid, both phones sync.'
+      },
+      {
+        tab: 'home',
+        targetId: 'tour-target-fab',
+        icon: 'plus-circle',
+        title: '5. Log Salary & Daily Spending',
+        desc: 'Tap the center "+" button whenever Adlan or Azfa receives salary or spends—it saves straight to your private vault.'
+      },
+      {
+        tab: 'home',
+        targetId: 'tour-target-safespend',
+        icon: 'shield-check',
+        title: '6. Watch Shared Safe-to-Spend',
+        desc: 'See how much money you both truly have left after unpaid monthly bills—or tap the sync icon anytime to refresh.'
+      }
+    ];
+
+    let currentGuideStep = 0;
+    let currentTab = 'home';
+    let commitmentFilter = 'all';
+    let activityFilter = 'all';
+    let cashflowChartInstance = null;
+    let categoryChartInstance = null;
+    let clearDataConfirmTimer = null;
+    let clearDataArmed = false;
+    let toastTimer = null;
+
+    let appState = {
+      currency: FIXED_CURRENCY,
+      darkMode: localStorage.getItem(STORAGE_KEYS.DARK) === 'true',
+      activeMember: localStorage.getItem(STORAGE_KEYS.MEMBER) || 'Adlan',
+      openingBalance: 4200.00,
+      commitments: [],
+      transactions: []
+    };
+
+    let ghConfig = {
+      owner: localStorage.getItem(STORAGE_KEYS.OWNER) || 'AdlanAkmal21',
+      repo: localStorage.getItem(STORAGE_KEYS.REPO) || 'adrina-vault',
+      path: localStorage.getItem(STORAGE_KEYS.PATH) || 'data.json',
+      token: localStorage.getItem(STORAGE_KEYS.TOKEN) || ''
+    };
+    let remoteFileSha = null;
+    let isSyncing = false;
+
+    function formatMYR(val) {
+      const num = Number(val) || 0;
+      const absStr = Math.abs(num).toLocaleString('en-MY', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+      return (num < 0 ? '-MYR ' : 'MYR ') + absStr;
+    }
+
+    function escapeHTML(str) {
+      return String(str ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function utf8ToBase64(str) {
+      const bytes = new TextEncoder().encode(str);
+      let binary = '';
+      for (let i = 0; i < bytes.length; i++) {
+        binary += String.fromCharCode(bytes[i]);
+      }
+      return btoa(binary);
+    }
+
+    function base64ToUtf8(b64) {
+      const clean = (b64 || '').replace(/\s/g, '');
+      const binary = atob(clean);
+      const bytes = new Uint8Array(binary.length);
+      for (let i = 0; i < binary.length; i++) {
+        bytes[i] = binary.charCodeAt(i);
+      }
+      return new TextDecoder().decode(bytes);
+    }
+
+    function getInitialDemoSeed() {
+      const todayIso = new Date().toISOString().slice(0, 10);
+      const now = Date.now();
+      return {
+        openingBalance: 4200.00,
+        commitments: [
+          {
+            id: 'comm-seed-1',
+            name: 'Home Mortgage / Rent',
+            amount: 1650.00,
+            dueDay: 1,
+            owner: 'Joint',
+            category: 'Housing & Rent',
+            autoDebit: true,
+            isPaid: true,
+            installmentCurrent: 18,
+            installmentTotal: 360
+          },
+          {
+            id: 'comm-seed-2',
+            name: 'Honda City Loan',
+            amount: 780.00,
+            dueDay: 5,
+            owner: 'Adlan',
+            category: 'Auto & Loans',
+            autoDebit: true,
+            isPaid: false,
+            installmentCurrent: 24,
+            installmentTotal: 84
+          },
+          {
+            id: 'comm-seed-3',
+            name: 'Unifi Fibre & Mobile',
+            amount: 189.00,
+            dueDay: 12,
+            owner: 'Joint',
+            category: 'Utilities & Telco',
+            autoDebit: false,
+            isPaid: false,
+            installmentCurrent: null,
+            installmentTotal: null
+          },
+          {
+            id: 'comm-seed-4',
+            name: 'Takaful Medical Plan',
+            amount: 320.00,
+            dueDay: 18,
+            owner: 'Azfa',
+            category: 'Insurance',
+            autoDebit: true,
+            isPaid: false,
+            installmentCurrent: null,
+            installmentTotal: null
+          }
+        ],
+        transactions: [
+          {
+            id: 'tx-seed-1',
+            type: 'income',
+            member: 'Adlan',
+            title: 'Monthly Salary (Adlan)',
+            amount: 5400.00,
+            category: 'Salary',
+            date: todayIso,
+            createdAt: now - 300000
+          },
+          {
+            id: 'tx-seed-2',
+            type: 'income',
+            member: 'Azfa',
+            title: 'Monthly Salary (Azfa)',
+            amount: 4600.00,
+            category: 'Salary',
+            date: todayIso,
+            createdAt: now - 200000
+          },
+          {
+            id: 'tx-seed-3',
+            type: 'commitment',
+            member: 'Joint',
+            title: 'Paid: Home Mortgage / Rent',
+            amount: 1650.00,
+            category: 'Housing & Rent',
+            date: todayIso,
+            linkedCommitmentId: 'comm-seed-1',
+            createdAt: now - 100000
+          },
+          {
+            id: 'tx-seed-4',
+            type: 'expense',
+            member: 'Azfa',
+            title: 'Jaya Grocer Weekly Restock',
+            amount: 215.40,
+            category: 'Groceries',
+            date: todayIso,
+            createdAt: now - 50000
+          }
+        ]
+      };
+    }
+
+    function hasGitHubConfig() {
+      return Boolean(ghConfig.owner && ghConfig.repo && ghConfig.token);
+    }
+
+    function saveLocalSnapshot() {
+      try {
+        localStorage.setItem(STORAGE_KEYS.LOCAL_CACHE, JSON.stringify({
+          openingBalance: appState.openingBalance,
+          commitments: appState.commitments,
+          transactions: appState.transactions
+        }));
+      } catch (e) {
+        console.warn('Local snapshot save skipped:', e);
+      }
+    }
+
+    function loadLocalSnapshotOrSeed() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEYS.LOCAL_CACHE);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          appState.openingBalance = Number(parsed.openingBalance) || 0;
+          appState.commitments = Array.isArray(parsed.commitments) ? parsed.commitments : [];
+          appState.transactions = Array.isArray(parsed.transactions) ? parsed.transactions : [];
+          renderAll();
+          return;
+        }
+      } catch (e) {
+        console.warn('Local snapshot parse error:', e);
+      }
+      const seed = getInitialDemoSeed();
+      appState.openingBalance = seed.openingBalance;
+      appState.commitments = seed.commitments;
+      appState.transactions = seed.transactions;
+      saveLocalSnapshot();
+      renderAll();
+    }
+
+    function setSyncSpinner(active) {
+      isSyncing = active;
+      const icon = document.getElementById('header-sync-icon');
+      if (icon) {
+        if (active) {
+          icon.classList.add('animate-spin');
+        } else {
+          icon.classList.remove('animate-spin');
+        }
+      }
+    }
+
+    function updateSyncStatusUI(statusText, isLive) {
+      const textEl = document.getElementById('sync-status-text');
+      const badgeEl = document.getElementById('sync-status-badge');
+      const pillEl = document.getElementById('settings-sync-pill');
+      const setupBanner = document.getElementById('github-setup-banner');
+      const disconnectBtn = document.getElementById('disconnect-gh-btn');
+
+      if (textEl) textEl.textContent = statusText;
+      if (badgeEl) {
+        badgeEl.className = isLive
+          ? 'inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 leading-none'
+          : 'inline-flex items-center gap-1 text-[10px] font-semibold text-amber-600 dark:text-amber-400 leading-none';
+        const dot = badgeEl.querySelector('span');
+        if (dot) {
+          dot.className = isLive
+            ? 'w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse'
+            : 'w-1.5 h-1.5 rounded-full bg-amber-500';
+        }
+      }
+
+      const configured = hasGitHubConfig();
+      if (setupBanner) {
+        setupBanner.classList.toggle('hidden', configured);
+      }
+      if (disconnectBtn) {
+        disconnectBtn.classList.toggle('hidden', !configured);
+      }
+      if (pillEl) {
+        if (configured && isLive) {
+          pillEl.textContent = 'Connected';
+          pillEl.className = 'px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 dark:bg-emerald-500/20 text-emerald-800 dark:text-emerald-300';
+        } else if (configured) {
+          pillEl.textContent = 'Check Token';
+          pillEl.className = 'px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 dark:bg-rose-500/20 text-rose-700 dark:text-rose-300';
+        } else {
+          pillEl.textContent = 'Not Connected';
+          pillEl.className = 'px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 dark:bg-amber-500/20 text-amber-800 dark:text-amber-300';
+        }
+      }
+    }
+
+    async function writeRawDataToGitHub(commitMsg) {
+      const url = `https://api.github.com/repos/${encodeURIComponent(ghConfig.owner)}/${encodeURIComponent(ghConfig.repo)}/contents/${ghConfig.path}`;
+      const payloadObj = {
+        updatedAt: new Date().toISOString(),
+        updatedBy: appState.activeMember,
+        openingBalance: appState.openingBalance,
+        commitments: appState.commitments,
+        transactions: appState.transactions
+      };
+      const encoded = utf8ToBase64(JSON.stringify(payloadObj, null, 2));
+      const body = {
+        message: commitMsg || `Update household funds (${appState.activeMember})`,
+        content: encoded
+      };
+      if (remoteFileSha) {
+        body.sha = remoteFileSha;
+      }
+
+      const res = await fetch(url, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${ghConfig.token}`,
+          'Accept': 'application/vnd.github+json',
+          'Content-Type': 'application/json',
+          'X-GitHub-Api-Version': '2022-11-28'
+        },
+        body: JSON.stringify(body)
+      });
+
+      if (!res.ok) {
+        const err = new Error(`GitHub write HTTP ${res.status}`);
+        err.status = res.status;
+        throw err;
+      }
+
+      const data = await res.json();
+      if (data && data.content && data.content.sha) {
+        remoteFileSha = data.content.sha;
+      }
+      return true;
+    }
+
+    async function pushStateToGitHub(commitMsg) {
+      saveLocalSnapshot();
+      renderAll();
+
+      if (!hasGitHubConfig()) {
+        updateSyncStatusUI('Local Only', false);
+        return false;
+      }
+
+      setSyncSpinner(true);
+      updateSyncStatusUI('Syncing...', true);
+
+      try {
+        await writeRawDataToGitHub(commitMsg);
+        updateSyncStatusUI('Synced', true);
+        return true;
+      } catch (err) {
+        if (err && (err.status === 409 || err.status === 422)) {
+          try {
+            const getUrl = `https://api.github.com/repos/${encodeURIComponent(ghConfig.owner)}/${encodeURIComponent(ghConfig.repo)}/contents/${ghConfig.path}?t=${Date.now()}`;
+            const getRes = await fetch(getUrl, {
+              headers: {
+                'Authorization': `Bearer ${ghConfig.token}`,
+                'Accept': 'application/vnd.github+json',
+                'X-GitHub-Api-Version': '2022-11-28'
+              }
+            });
+            if (getRes.ok) {
+              const fileObj = await getRes.json();
+              remoteFileSha = fileObj.sha || null;
+              const remoteParsed = JSON.parse(base64ToUtf8(fileObj.content || '{}'));
+
+              const txMap = new Map();
+              (remoteParsed.transactions || []).forEach(t => txMap.set(t.id, t));
+              appState.transactions.forEach(t => txMap.set(t.id, t));
+              appState.transactions = Array.from(txMap.values()).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+
+              const commMap = new Map();
+              (remoteParsed.commitments || []).forEach(c => commMap.set(c.id, c));
+              appState.commitments.forEach(c => commMap.set(c.id, c));
+              appState.commitments = Array.from(commMap.values());
+
+              await writeRawDataToGitHub(commitMsg);
+              saveLocalSnapshot();
+              renderAll();
+              updateSyncStatusUI('Synced', true);
+              return true;
+            }
+          } catch (retryErr) {
+            console.error('Conflict retry failed:', retryErr);
+          }
+        }
+        console.error('GitHub push error:', err);
+        updateSyncStatusUI('Sync Error', false);
+        showToast('Saved locally, but GitHub sync failed.');
+        return false;
+      } finally {
+        setSyncSpinner(false);
+      }
+    }
+
+    async function pullFromGitHub(silent = false) {
+      if (!hasGitHubConfig()) {
+        loadLocalSnapshotOrSeed();
+        updateSyncStatusUI('Local Only', false);
+        return false;
+      }
+
+      setSyncSpinner(true);
+      if (!silent) updateSyncStatusUI('Syncing...', true);
+
+      const url = `https://api.github.com/repos/${encodeURIComponent(ghConfig.owner)}/${encodeURIComponent(ghConfig.repo)}/contents/${ghConfig.path}?t=${Date.now()}`;
+
+      try {
+        const res = await fetch(url, {
+          headers: {
+            'Authorization': `Bearer ${ghConfig.token}`,
+            'Accept': 'application/vnd.github+json',
+            'X-GitHub-Api-Version': '2022-11-28'
+          }
+        });
+
+        if (res.status === 404) {
+          const seed = getInitialDemoSeed();
+          appState.openingBalance = seed.openingBalance;
+          appState.commitments = seed.commitments;
+          appState.transactions = seed.transactions;
+          remoteFileSha = null;
+          await writeRawDataToGitHub('Initialize Adlan & Azfa household vault');
+          saveLocalSnapshot();
+          renderAll();
+          updateSyncStatusUI('Synced', true);
+          return true;
+        }
+
+        if (!res.ok) {
+          throw new Error(`GitHub HTTP ${res.status}`);
+        }
+
+        const fileObj = await res.json();
+        remoteFileSha = fileObj.sha || null;
+        const decodedText = base64ToUtf8(fileObj.content || '');
+        const parsed = decodedText ? JSON.parse(decodedText) : {};
+
+        appState.openingBalance = Number(parsed.openingBalance) || 0;
+        appState.commitments = Array.isArray(parsed.commitments) ? parsed.commitments : [];
+        appState.transactions = Array.isArray(parsed.transactions) ? parsed.transactions : [];
+        appState.transactions.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+
+        saveLocalSnapshot();
+        renderAll();
+        updateSyncStatusUI('Synced', true);
+        return true;
+      } catch (err) {
+        console.error('GitHub pull error:', err);
+        loadLocalSnapshotOrSeed();
+        updateSyncStatusUI('Sync Error', false);
+        if (!silent) {
+          showToast('Could not reach GitHub vault. Check token/repo in Settings.');
+        }
+        return false;
+      } finally {
+        setSyncSpinner(false);
+      }
+    }
+
+    async function manualSyncNow() {
+      if (isSyncing) return;
+      if (!hasGitHubConfig()) {
+        openSettingsModal();
+        showToast('Enter your Private GitHub Vault details first');
+        return;
+      }
+      const ok = await pullFromGitHub(false);
+      if (ok) showToast('Synced with Private GitHub Vault');
+    }
+
+    async function saveAndConnectGitHub() {
+      const owner = (document.getElementById('settings-gh-owner').value || '').trim();
+      const repo = (document.getElementById('settings-gh-repo').value || '').trim();
+      const token = (document.getElementById('settings-gh-token').value || '').trim();
+
+      if (!owner || !repo || !token) {
+        showToast('Please fill Username, Repo Name, and Token');
+        return;
+      }
+
+      ghConfig.owner = owner;
+      ghConfig.repo = repo;
+      ghConfig.token = token;
+      remoteFileSha = null;
+
+      localStorage.setItem(STORAGE_KEYS.OWNER, owner);
+      localStorage.setItem(STORAGE_KEYS.REPO, repo);
+      localStorage.setItem(STORAGE_KEYS.TOKEN, token);
+
+      const ok = await pullFromGitHub(false);
+      if (ok) {
+        showToast('Connected & Synced!');
+        closeSettingsModal();
+      }
+    }
+
+    function disconnectGitHubVault() {
+      ghConfig.token = '';
+      remoteFileSha = null;
+      localStorage.removeItem(STORAGE_KEYS.TOKEN);
+      const tokenInput = document.getElementById('settings-gh-token');
+      if (tokenInput) tokenInput.value = '';
+      updateSyncStatusUI('Local Only', false);
+      showToast('Unlinked GitHub token from this phone');
+    }
+
+    function toggleTokenVisibility() {
+      const input = document.getElementById('settings-gh-token');
+      const icon = document.getElementById('token-eye-icon');
+      if (!input) return;
+      if (input.type === 'password') {
+        input.type = 'text';
+        if (icon) icon.setAttribute('data-lucide', 'eye-off');
+      } else {
+        input.type = 'password';
+        if (icon) icon.setAttribute('data-lucide', 'eye');
+      }
+      if (window.lucide) lucide.createIcons();
+    }
+
+    /**
+     * Generate crisp 192x192 & 512x512 PNG icons via HTML5 Canvas so the user can
+     * upload them directly to GitHub Pages for a true Chrome WebAPK icon.
+     */
+    function downloadAppIcons() {
+      [192, 512].forEach((size, idx) => {
+        const canvas = document.createElement('canvas');
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext('2d');
+
+        // Rounded Squircle Background
+        const r = size * 0.22;
+        ctx.beginPath();
+        ctx.moveTo(r, 0);
+        ctx.lineTo(size - r, 0);
+        ctx.quadraticCurveTo(size, 0, size, r);
+        ctx.lineTo(size, size - r);
+        ctx.quadraticCurveTo(size, size, size - r, size);
+        ctx.lineTo(r, size);
+        ctx.quadraticCurveTo(0, size, 0, size - r);
+        ctx.lineTo(0, r);
+        ctx.quadraticCurveTo(0, 0, r, 0);
+        ctx.closePath();
+
+        const grad = ctx.createLinearGradient(0, 0, size, size);
+        grad.addColorStop(0, '#2563eb');
+        grad.addColorStop(0.55, '#4f46e5');
+        grad.addColorStop(1, '#ff2a93');
+        ctx.fillStyle = grad;
+        ctx.fill();
+
+        // Subtle inner ring
+        ctx.strokeStyle = 'rgba(255,255,255,0.22)';
+        ctx.lineWidth = size * 0.025;
+        ctx.stroke();
+
+        // Bold "A&A" Monogram (Centered inside Android's 65% circular maskable safe zone)
+        ctx.fillStyle = '#ffffff';
+        ctx.font = `800 ${Math.round(size * 0.27)}px Inter, system-ui, sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('A&A', size / 2, size * 0.45);
+
+        // Compact Subtitle inside safe zone
+        ctx.fillStyle = 'rgba(255,255,255,0.88)';
+        ctx.font = `700 ${Math.round(size * 0.068)}px Inter, system-ui, sans-serif`;
+        ctx.fillText('FUNDS', size / 2, size * 0.65);
+
+        setTimeout(() => {
+          canvas.toBlob((blob) => {
+            if (!blob) return;
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `icon-${size}.png`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+          }, 'image/png');
+        }, idx * 250);
+      });
+      showToast('Downloading icon-192.png & icon-512.png');
+    }
+
+    /* ==========================================================================
+       PROFILE THEME (ADLAN = BLUE, AZFA = BRIGHT PINK) & DARK MODE
+       ========================================================================== */
+    function setActiveMember(member, skipToast = false) {
+      appState.activeMember = member === 'Azfa' ? 'Azfa' : 'Adlan';
+      localStorage.setItem(STORAGE_KEYS.MEMBER, appState.activeMember);
+
+      const isAzfa = appState.activeMember === 'Azfa';
+      document.documentElement.setAttribute('data-profile', isAzfa ? 'azfa' : 'adlan');
+
+      const metaTheme = document.querySelector('meta[name="theme-color"]');
+      if (metaTheme) {
+        metaTheme.setAttribute('content', isAzfa ? '#ff2a93' : '#2563eb');
+      }
+
+      const adlanBtn = document.getElementById('active-user-adlan');
+      const azfaBtn = document.getElementById('active-user-azfa');
+      if (adlanBtn && azfaBtn) {
+        if (isAzfa) {
+          adlanBtn.className = 'px-3 py-1 rounded-lg text-[11px] font-bold text-slate-500 dark:text-slate-400 transition';
+          azfaBtn.className = 'px-3 py-1 rounded-lg text-[11px] font-extrabold bg-[#ff2a93] text-white shadow-xs transition';
+        } else {
+          adlanBtn.className = 'px-3 py-1 rounded-lg text-[11px] font-extrabold bg-blue-600 text-white shadow-xs transition';
+          azfaBtn.className = 'px-3 py-1 rounded-lg text-[11px] font-bold text-slate-500 dark:text-slate-400 transition';
+        }
+      }
+
+      setTxMember(appState.activeMember);
+      if (currentTab === 'insights') renderInsights();
+      if (!skipToast) showToast(`Switched profile to ${appState.activeMember}`);
+    }
+
+    function applyTheme() {
+      const htmlEl = document.documentElement;
+      const icon = document.getElementById('theme-icon');
+      if (appState.darkMode) {
+        htmlEl.classList.add('dark');
+        if (icon) icon.setAttribute('data-lucide', 'sun');
+      } else {
+        htmlEl.classList.remove('dark');
+        if (icon) icon.setAttribute('data-lucide', 'moon');
+      }
+      if (window.lucide) lucide.createIcons();
+      if (currentTab === 'insights') renderInsights();
+    }
+
+    function toggleDarkMode() {
+      appState.darkMode = !appState.darkMode;
+      localStorage.setItem(STORAGE_KEYS.DARK, String(appState.darkMode));
+      applyTheme();
+    }
+
+    /* ==========================================================================
+       NAVIGATION & TAB SWITCHING
+       ========================================================================== */
+    const TAB_ORDER = ['home', 'commitments', 'activity', 'insights'];
+
+    function switchTab(tabName) {
+      if (!TAB_ORDER.includes(tabName)) return;
+      const prevIdx = TAB_ORDER.indexOf(currentTab);
+      const nextIdx = TAB_ORDER.indexOf(tabName);
+      currentTab = tabName;
+
+      TAB_ORDER.forEach(name => {
+        const panel = document.getElementById(`tab-${name}`);
+        const navBtn = document.getElementById(`nav-${name}`);
+        if (panel) {
+          panel.classList.add('hidden');
+          panel.classList.remove('tab-enter-left', 'tab-enter-right');
+        }
+        if (navBtn) {
+          navBtn.className = 'nav-btn flex flex-col items-center gap-1 py-1 px-3 rounded-2xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition';
+          const span = navBtn.querySelector('span');
+          if (span) span.className = 'text-[10px] font-semibold';
+        }
+      });
+
+      const activePanel = document.getElementById(`tab-${tabName}`);
+      if (activePanel) {
+        activePanel.classList.remove('hidden');
+        if (nextIdx > prevIdx) activePanel.classList.add('tab-enter-right');
+        else if (nextIdx < prevIdx) activePanel.classList.add('tab-enter-left');
+      }
+
+      const activeNav = document.getElementById(`nav-${tabName}`);
+      if (activeNav) {
+        activeNav.className = 'nav-btn flex flex-col items-center gap-1 py-1 px-3 rounded-2xl text-indigo-600 dark:text-indigo-400 transition';
+        const span = activeNav.querySelector('span');
+        if (span) span.className = 'text-[10px] font-bold';
+        const svg = activeNav.querySelector('svg');
+        if (svg) {
+          svg.classList.remove('nav-icon-pop');
+          void svg.offsetWidth;
+          svg.classList.add('nav-icon-pop');
+        }
+      }
+
+      if (tabName === 'insights') {
+        renderInsights();
+      }
+      if (window.lucide) lucide.createIcons();
+    }
+
+    /* ==========================================================================
+       CORE CALCULATIONS & RENDERING
+       ========================================================================== */
+    function computeMetrics() {
+      let totalIncome = 0;
+      let totalOutflow = 0;
+      let adlanIn = 0;
+      let adlanOut = 0;
+      let azfaIn = 0;
+      let azfaOut = 0;
+
+      appState.transactions.forEach(tx => {
+        const amt = Number(tx.amount) || 0;
+        if (tx.type === 'income') {
+          totalIncome += amt;
+          if (tx.member === 'Adlan') adlanIn += amt;
+          if (tx.member === 'Azfa') azfaIn += amt;
+        } else {
+          totalOutflow += amt;
+          if (tx.member === 'Adlan') adlanOut += amt;
+          if (tx.member === 'Azfa') azfaOut += amt;
+        }
+      });
+
+      const currentBalance = (Number(appState.openingBalance) || 0) + totalIncome - totalOutflow;
+
+      let totalCommitments = 0;
+      let paidCommitments = 0;
+      let unpaidCommitments = 0;
+      let paidCount = 0;
+
+      appState.commitments.forEach(c => {
+        const amt = Number(c.amount) || 0;
+        totalCommitments += amt;
+        if (c.isPaid) {
+          paidCommitments += amt;
+          paidCount += 1;
+        } else {
+          unpaidCommitments += amt;
+        }
+      });
+
+      const safeToSpend = currentBalance - unpaidCommitments;
+
+      return {
+        totalIncome,
+        totalOutflow,
+        adlanIn,
+        adlanOut,
+        azfaIn,
+        azfaOut,
+        currentBalance,
+        safeToSpend,
+        totalCommitments,
+        paidCommitments,
+        unpaidCommitments,
+        paidCount,
+        totalCount: appState.commitments.length
+      };
+    }
+
+    function getMemberBadgeHTML(owner) {
+      if (owner === 'Azfa') {
+        return '<span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-[#fff0f7] dark:bg-[#ff4da6]/20 text-[#ff2a93] dark:text-[#ff85c4]">Azfa</span>';
+      }
+      if (owner === 'Adlan') {
+        return '<span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-blue-50 dark:bg-blue-500/20 text-blue-600 dark:text-blue-300">Adlan</span>';
+      }
+      return '<span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-violet-50 dark:bg-violet-500/20 text-violet-600 dark:text-violet-300">Joint</span>';
+    }
+
+    function renderAll() {
+      renderHome();
+      renderCommitments();
+      renderActivity();
+      if (currentTab === 'insights') {
+        renderInsights();
+      }
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function renderHome() {
+      const m = computeMetrics();
+
+      document.getElementById('home-total-balance').textContent = formatMYR(m.currentBalance);
+      const safeEl = document.getElementById('home-safe-spend');
+      safeEl.textContent = formatMYR(m.safeToSpend);
+      safeEl.className = m.safeToSpend < 0
+        ? 'text-lg font-extrabold text-rose-300'
+        : 'text-lg font-extrabold text-emerald-300';
+
+      document.getElementById('home-total-income').textContent = formatMYR(m.totalIncome);
+      document.getElementById('home-total-outflow').textContent = formatMYR(m.totalOutflow);
+      document.getElementById('home-adlan-in').textContent = formatMYR(m.adlanIn);
+      document.getElementById('home-adlan-out').textContent = formatMYR(m.adlanOut);
+      document.getElementById('home-azfa-in').textContent = formatMYR(m.azfaIn);
+      document.getElementById('home-azfa-out').textContent = formatMYR(m.azfaOut);
+
+      const pct = m.totalCount > 0 ? Math.round((m.paidCount / m.totalCount) * 100) : 0;
+      document.getElementById('home-commit-subtitle').textContent = `${m.paidCount} of ${m.totalCount} settled`;
+      document.getElementById('home-commit-pct').textContent = `${pct}%`;
+      document.getElementById('home-commit-bar').style.width = `${pct}%`;
+      document.getElementById('home-commit-paid').textContent = formatMYR(m.paidCommitments);
+      document.getElementById('home-commit-unpaid').textContent = formatMYR(m.unpaidCommitments);
+
+      // Upcoming Unpaid Bills (Top 3)
+      const upcomingEl = document.getElementById('home-upcoming-list');
+      const unpaidSorted = [...appState.commitments]
+        .filter(c => !c.isPaid)
+        .sort((a, b) => (Number(a.dueDay) || 1) - (Number(b.dueDay) || 1))
+        .slice(0, 3);
+
+      if (unpaidSorted.length === 0) {
+        upcomingEl.innerHTML = `
+          <div class="rounded-2xl bg-white dark:bg-slate-800/80 border border-slate-200/70 dark:border-slate-700/70 p-4 text-center text-xs text-slate-500 dark:text-slate-400">
+            All monthly commitments are settled!
+          </div>`;
+      } else {
+        upcomingEl.innerHTML = unpaidSorted.map((c, idx) => `
+          <div style="animation-delay:${idx * 45}ms" class="list-item-enter rounded-2xl bg-white dark:bg-slate-800/90 border border-slate-200/80 dark:border-slate-700/80 p-3.5 flex items-center justify-between gap-3 shadow-xs">
+            <div class="min-w-0">
+              <div class="flex items-center gap-1.5">
+                <p class="text-xs font-bold truncate">${escapeHTML(c.name)}</p>
+                ${getMemberBadgeHTML(c.owner)}
+              </div>
+              <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Due day ${Number(c.dueDay) || 1} &bull; ${escapeHTML(c.category)}</p>
+            </div>
+            <div class="flex items-center gap-2 shrink-0">
+              <span class="text-xs font-extrabold">${formatMYR(c.amount)}</span>
+              <button onclick="toggleCommitmentPaid('${escapeHTML(c.id)}')" class="px-2.5 py-1.5 rounded-xl bg-indigo-50 dark:bg-indigo-500/15 text-indigo-600 dark:text-indigo-300 hover:bg-indigo-100 text-[11px] font-extrabold transition">
+                Pay
+              </button>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      // Recent Activity (Top 4)
+      const recentEl = document.getElementById('home-recent-list');
+      const recentSlice = appState.transactions.slice(0, 4);
+      if (recentSlice.length === 0) {
+        recentEl.innerHTML = `
+          <div class="rounded-2xl bg-white dark:bg-slate-800/80 border border-slate-200/70 dark:border-slate-700/70 p-4 text-center text-xs text-slate-500 dark:text-slate-400">
+            No transactions yet. Tap + below to log your first entry.
+          </div>`;
+      } else {
+        recentEl.innerHTML = recentSlice.map((tx, idx) => renderTransactionRowHTML(tx, idx, false)).join('');
+      }
+    }
+
+    function setCommitmentFilter(filter) {
+      commitmentFilter = filter;
+      ['all', 'unpaid', 'paid', 'Adlan', 'Azfa'].forEach(f => {
+        const btn = document.getElementById(`cfilter-${f}`);
+        if (!btn) return;
+        btn.className = f === filter
+          ? 'cfilter-btn px-3.5 py-1.5 rounded-xl text-xs font-bold bg-indigo-600 text-white transition shrink-0'
+          : 'cfilter-btn px-3.5 py-1.5 rounded-xl text-xs font-bold bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 transition shrink-0';
+      });
+      renderCommitments();
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function renderCommitments() {
+      const container = document.getElementById('commitments-list');
+      let items = [...appState.commitments].sort((a, b) => (Number(a.dueDay) || 1) - (Number(b.dueDay) || 1));
+
+      if (commitmentFilter === 'unpaid') items = items.filter(c => !c.isPaid);
+      else if (commitmentFilter === 'paid') items = items.filter(c => c.isPaid);
+      else if (commitmentFilter === 'Adlan') items = items.filter(c => c.owner === 'Adlan' || c.owner === 'Joint');
+      else if (commitmentFilter === 'Azfa') items = items.filter(c => c.owner === 'Azfa' || c.owner === 'Joint');
+
+      if (items.length === 0) {
+        container.innerHTML = `
+          <div class="rounded-3xl bg-white dark:bg-slate-800/80 border border-slate-200/70 dark:border-slate-700/70 p-6 text-center space-y-2">
+            <p class="text-xs font-bold text-slate-600 dark:text-slate-300">No commitments match this filter</p>
+            <p class="text-[11px] text-slate-400">Tap "+ Add Bill" above to track fixed monthly commitments.</p>
+          </div>`;
+        return;
+      }
+
+      container.innerHTML = items.map((c, idx) => {
+        const hasTenure = Number(c.installmentTotal) > 0;
+        const currInst = Number(c.installmentCurrent) || 1;
+        const totInst = Number(c.installmentTotal) || 1;
+        const tenurePct = hasTenure ? Math.min(100, Math.round((currInst / totInst) * 100)) : 0;
+
+        return `
+          <div style="animation-delay:${idx * 40}ms" class="list-item-enter rounded-3xl bg-white dark:bg-slate-800/90 border ${c.isPaid ? 'border-emerald-200/80 dark:border-emerald-500/25' : 'border-slate-200/80 dark:border-slate-700/80'} p-4 shadow-xs space-y-3">
+            <div class="flex items-start justify-between gap-2">
+              <div class="min-w-0">
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <h3 class="text-sm font-extrabold truncate">${escapeHTML(c.name)}</h3>
+                  ${getMemberBadgeHTML(c.owner)}
+                  ${c.autoDebit ? '<span class="px-1.5 py-0.5 rounded-md text-[9px] font-bold bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300">Auto-Debit</span>' : ''}
+                </div>
+                <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Due day ${Number(c.dueDay) || 1} &bull; ${escapeHTML(c.category)}</p>
+              </div>
+              <div class="text-right shrink-0">
+                <p class="text-sm font-extrabold">${formatMYR(c.amount)}</p>
+                <span class="inline-block mt-0.5 text-[10px] font-bold ${c.isPaid ? 'text-emerald-600 dark:text-emerald-400' : 'text-amber-600 dark:text-amber-400'}">
+                  ${c.isPaid ? 'Settled' : 'Unpaid'}
+                </span>
+              </div>
+            </div>
+
+            ${hasTenure ? `
+              <div class="space-y-1">
+                <div class="flex items-center justify-between text-[10px] font-semibold text-slate-500 dark:text-slate-400">
+                  <span>Loan Tenure Progress</span>
+                  <span>Month ${currInst} of ${totInst} (${tenurePct}%)</span>
+                </div>
+                <div class="w-full h-1.5 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+                  <div class="h-full bg-indigo-500 rounded-full" style="width: ${tenurePct}%"></div>
+                </div>
+              </div>
+            ` : ''}
+
+            <div class="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-700/70 gap-2">
+              <div class="flex items-center gap-1.5">
+                <button onclick="openCommitmentDrawer('${escapeHTML(c.id)}')" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-700/70 text-slate-600 dark:text-slate-300 hover:bg-slate-200 transition" aria-label="Edit Bill">
+                  <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
+                </button>
+                <button onclick="deleteCommitment('${escapeHTML(c.id)}')" class="p-2 rounded-xl bg-rose-50 dark:bg-rose-500/15 text-rose-600 dark:text-rose-400 hover:bg-rose-100 transition" aria-label="Delete Bill">
+                  <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                </button>
+              </div>
+
+              <button onclick="toggleCommitmentPaid('${escapeHTML(c.id)}')" class="px-3.5 py-1.5 rounded-xl text-xs font-extrabold transition flex items-center gap-1.5 ${c.isPaid ? 'bg-emerald-50 dark:bg-emerald-500/15 text-emerald-700 dark:text-emerald-300' : 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm'}">
+                <i data-lucide="${c.isPaid ? 'check-circle-2' : 'circle-dollar-sign'}" class="w-3.5 h-3.5"></i>
+                <span>${c.isPaid ? 'Paid (Undo)' : 'Mark as Paid'}</span>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function setActivityFilter(filter) {
+      activityFilter = filter;
+      ['all', 'Adlan', 'Azfa', 'income', 'expense', 'commitment'].forEach(f => {
+        const btn = document.getElementById(`afilter-${f}`);
+        if (!btn) return;
+        btn.className = f === filter
+          ? 'afilter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-indigo-600 text-white shrink-0'
+          : 'afilter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 shrink-0';
+      });
+      renderActivity();
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function renderTransactionRowHTML(tx, idx, allowDelete) {
+      const isIncome = tx.type === 'income';
+      const sign = isIncome ? '+' : '-';
+      const amtClass = isIncome
+        ? 'text-emerald-600 dark:text-emerald-400'
+        : 'text-slate-900 dark:text-slate-100';
+      const iconName = isIncome ? 'arrow-down-left' : (tx.type === 'commitment' ? 'calendar-check-2' : 'shopping-bag');
+      const iconBg = isIncome
+        ? 'bg-emerald-50 dark:bg-emerald-500/15 text-emerald-600 dark:text-emerald-400'
+        : 'bg-slate-100 dark:bg-slate-700/80 text-slate-600 dark:text-slate-300';
+
+      return `
+        <div style="animation-delay:${idx * 30}ms" class="list-item-enter rounded-2xl bg-white dark:bg-slate-800/90 border border-slate-200/80 dark:border-slate-700/80 p-3 flex items-center justify-between gap-2.5 shadow-xs">
+          <div class="flex items-center gap-2.5 min-w-0">
+            <div class="w-9 h-9 rounded-xl ${iconBg} flex items-center justify-center shrink-0">
+              <i data-lucide="${iconName}" class="w-4 h-4"></i>
+            </div>
+            <div class="min-w-0">
+              <div class="flex items-center gap-1.5">
+                <p class="text-xs font-bold truncate">${escapeHTML(tx.title)}</p>
+                ${getMemberBadgeHTML(tx.member)}
+              </div>
+              <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">${escapeHTML(tx.category)} &bull; ${escapeHTML(tx.date || '')}</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 shrink-0">
+            <span class="text-xs font-extrabold ${amtClass}">${sign}${formatMYR(tx.amount)}</span>
+            ${allowDelete ? `
+              <button onclick="deleteTransaction('${escapeHTML(tx.id)}')" class="p-1.5 rounded-lg text-slate-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/15 transition" aria-label="Delete Transaction">
+                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+              </button>
+            ` : ''}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderActivity() {
+      const container = document.getElementById('activity-list');
+      const query = (document.getElementById('activity-search')?.value || '').trim().toLowerCase();
+
+      let items = [...appState.transactions];
+      if (activityFilter === 'Adlan') items = items.filter(t => t.member === 'Adlan');
+      else if (activityFilter === 'Azfa') items = items.filter(t => t.member === 'Azfa');
+      else if (activityFilter === 'income') items = items.filter(t => t.type === 'income');
+      else if (activityFilter === 'expense') items = items.filter(t => t.type === 'expense');
+      else if (activityFilter === 'commitment') items = items.filter(t => t.type === 'commitment');
+
+      if (query) {
+        items = items.filter(t =>
+          (t.title || '').toLowerCase().includes(query) ||
+          (t.category || '').toLowerCase().includes(query) ||
+          (t.member || '').toLowerCase().includes(query)
+        );
+      }
+
+      if (items.length === 0) {
+        container.innerHTML = `
+          <div class="rounded-3xl bg-white dark:bg-slate-800/80 border border-slate-200/70 dark:border-slate-700/70 p-6 text-center text-xs text-slate-500 dark:text-slate-400">
+            No transactions found matching your filter.
+          </div>`;
+        return;
+      }
+
+      container.innerHTML = items.map((tx, idx) => renderTransactionRowHTML(tx, idx, true)).join('');
+    }
+
+    function renderInsights() {
+      const m = computeMetrics();
+      const ratio = m.totalIncome > 0 ? Math.round((m.totalCommitments / m.totalIncome) * 100) : 0;
+      const clampedBar = Math.min(100, ratio);
+
+      const badge = document.getElementById('insight-ratio-badge');
+      const bar = document.getElementById('insight-ratio-bar');
+      const note = document.getElementById('insight-ratio-note');
+
+      badge.textContent = `${ratio}%`;
+      bar.style.width = `${clampedBar}%`;
+
+      if (m.totalIncome <= 0) {
+        badge.className = 'px-2.5 py-1 rounded-full text-xs font-extrabold bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300';
+        bar.className = 'h-full bg-slate-400 rounded-full transition-all duration-500';
+        note.textContent = 'Log your monthly salaries to calculate your household commitment ratio.';
+      } else if (ratio <= 50) {
+        badge.className = 'px-2.5 py-1 rounded-full text-xs font-extrabold bg-emerald-50 dark:bg-emerald-500/15 text-emerald-600 dark:text-emerald-400';
+        bar.className = 'h-full bg-emerald-500 rounded-full transition-all duration-500';
+        note.textContent = `Healthy ratio! Fixed commitments take ${ratio}% of your combined income (${formatMYR(m.totalCommitments)} of ${formatMYR(m.totalIncome)}).`;
+      } else {
+        badge.className = 'px-2.5 py-1 rounded-full text-xs font-extrabold bg-amber-50 dark:bg-amber-500/15 text-amber-600 dark:text-amber-400';
+        bar.className = 'h-full bg-amber-500 rounded-full transition-all duration-500';
+        note.textContent = `Heads up: Commitments are ${ratio}% of combined income, above the 50% benchmark.`;
+      }
+
+      if (typeof Chart === 'undefined') return;
+      const isDark = appState.darkMode;
+      const tickColor = isDark ? '#94a3b8' : '#64748b';
+      const gridColor = isDark ? 'rgba(148, 163, 184, 0.12)' : 'rgba(148, 163, 184, 0.2)';
+      const primaryColor = appState.activeMember === 'Azfa' ? '#ff2a93' : '#2563eb';
+
+      const cfCanvas = document.getElementById('cashflow-chart');
+      if (cfCanvas) {
+        if (cashflowChartInstance) cashflowChartInstance.destroy();
+        cashflowChartInstance = new Chart(cfCanvas, {
+          type: 'bar',
+          data: {
+            labels: ['Income', 'Bills', 'Spending', 'Safe-to-Spend'],
+            datasets: [{
+              data: [
+                m.totalIncome,
+                m.totalCommitments,
+                Math.max(0, m.totalOutflow - m.paidCommitments),
+                Math.max(0, m.safeToSpend)
+              ],
+              backgroundColor: ['#10b981', '#f59e0b', '#f43f5e', primaryColor],
+              borderRadius: 10,
+              maxBarThickness: 38
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+              x: { ticks: { color: tickColor, font: { size: 10, weight: '600' } }, grid: { display: false } },
+              y: { ticks: { color: tickColor, font: { size: 10 } }, grid: { color: gridColor } }
+            }
+          }
+        });
+      }
+
+      const catCanvas = document.getElementById('category-chart');
+      if (catCanvas) {
+        const catTotals = {};
+        appState.transactions
+          .filter(t => t.type !== 'income')
+          .forEach(t => {
+            const key = t.category || 'Other';
+            catTotals[key] = (catTotals[key] || 0) + (Number(t.amount) || 0);
+          });
+
+        const labels = Object.keys(catTotals);
+        const values = Object.values(catTotals);
+
+        if (categoryChartInstance) categoryChartInstance.destroy();
+        categoryChartInstance = new Chart(catCanvas, {
+          type: 'doughnut',
+          data: {
+            labels: labels.length ? labels : ['No Outflows Yet'],
+            datasets: [{
+              data: values.length ? values : [1],
+              backgroundColor: values.length
+                ? [primaryColor, '#10b981', '#f59e0b', '#f43f5e', '#8b5cf6', '#06b6d4', '#ec4899']
+                : ['#cbd5e1'],
+              borderWidth: 0
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '64%',
+            plugins: {
+              legend: {
+                position: 'right',
+                labels: { color: tickColor, boxWidth: 10, font: { size: 10, weight: '600' } }
+              }
+            }
+          }
+        });
+      }
+    }
+
+    /* ==========================================================================
+       MODALS & CRUD ACTIONS (TRANSACTIONS, COMMITMENTS, SETTINGS)
+       ========================================================================== */
+    function openModalEl(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.classList.remove('hidden');
+      el.classList.add('flex', 'modal-backdrop-enter');
+      const sheet = el.querySelector('.modal-sheet');
+      if (sheet) {
+        sheet.classList.remove('modal-sheet-enter');
+        void sheet.offsetWidth;
+        sheet.classList.add('modal-sheet-enter');
+      }
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function closeModalEl(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.classList.add('hidden');
+      el.classList.remove('flex', 'modal-backdrop-enter');
+    }
+
+    function openTransactionModal() {
+      const form = document.getElementById('tx-form');
+      if (form) form.reset();
+      setTxType('expense');
+      setTxMember(appState.activeMember);
+      const dateInput = document.getElementById('tx-date');
+      if (dateInput) dateInput.value = new Date().toISOString().slice(0, 10);
+      openModalEl('tx-modal');
+    }
+
+    function closeTransactionModal() {
+      closeModalEl('tx-modal');
+    }
+
+    function setTxType(type) {
+      const isIncome = type === 'income';
+      document.getElementById('tx-type-input').value = isIncome ? 'income' : 'expense';
+      const expBtn = document.getElementById('tx-type-expense');
+      const incBtn = document.getElementById('tx-type-income');
+      const catSelect = document.getElementById('tx-category');
+
+      if (isIncome) {
+        incBtn.className = 'py-2 rounded-xl text-xs font-bold bg-white dark:bg-slate-700 text-emerald-600 dark:text-emerald-400 shadow-xs transition';
+        expBtn.className = 'py-2 rounded-xl text-xs font-bold text-slate-500 dark:text-slate-400 transition';
+        if (catSelect) catSelect.value = 'Salary';
+      } else {
+        expBtn.className = 'py-2 rounded-xl text-xs font-bold bg-white dark:bg-slate-700 text-rose-600 dark:text-rose-400 shadow-xs transition';
+        incBtn.className = 'py-2 rounded-xl text-xs font-bold text-slate-500 dark:text-slate-400 transition';
+        if (catSelect) catSelect.value = 'Food & Dining';
+      }
+    }
+
+    function setTxMember(member) {
+      const isAzfa = member === 'Azfa';
+      const input = document.getElementById('tx-member-input');
+      if (input) input.value = isAzfa ? 'Azfa' : 'Adlan';
+
+      const adlanBtn = document.getElementById('tx-member-Adlan');
+      const azfaBtn = document.getElementById('tx-member-Azfa');
+      if (adlanBtn && azfaBtn) {
+        if (isAzfa) {
+          adlanBtn.className = 'py-1.5 rounded-xl text-xs font-bold text-slate-500 dark:text-slate-400 transition';
+          azfaBtn.className = 'py-1.5 rounded-xl text-xs font-extrabold bg-[#ff2a93] text-white shadow-xs transition';
+        } else {
+          adlanBtn.className = 'py-1.5 rounded-xl text-xs font-extrabold bg-blue-600 text-white shadow-xs transition';
+          azfaBtn.className = 'py-1.5 rounded-xl text-xs font-bold text-slate-500 dark:text-slate-400 transition';
+        }
+      }
+    }
+
+    async function handleTransactionSubmit(e) {
+      e.preventDefault();
+      const type = document.getElementById('tx-type-input').value;
+      const member = document.getElementById('tx-member-input').value;
+      const amount = parseFloat(document.getElementById('tx-amount').value);
+      const title = document.getElementById('tx-title').value.trim();
+      const category = document.getElementById('tx-category').value;
+      const date = document.getElementById('tx-date').value;
+
+      if (!title || isNaN(amount) || amount <= 0) return;
+
+      const newTx = {
+        id: `tx-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+        type,
+        member,
+        title,
+        amount: Math.round(amount * 100) / 100,
+        category,
+        date,
+        createdAt: Date.now()
+      };
+
+      appState.transactions.unshift(newTx);
+      closeTransactionModal();
+      showToast(`Logged ${title}`);
+      await pushStateToGitHub(`Log ${type}: ${title} (${member})`);
+    }
+
+    async function deleteTransaction(txId) {
+      const idx = appState.transactions.findIndex(t => t.id === txId);
+      if (idx === -1) return;
+      const removed = appState.transactions[idx];
+      appState.transactions.splice(idx, 1);
+
+      if (removed.linkedCommitmentId) {
+        const comm = appState.commitments.find(c => c.id === removed.linkedCommitmentId);
+        if (comm) comm.isPaid = false;
+      }
+
+      showToast('Transaction deleted');
+      await pushStateToGitHub(`Delete transaction: ${removed.title}`);
+    }
+
+    function openCommitmentDrawer(editId = '') {
+      const form = document.getElementById('commitment-form');
+      if (form) form.reset();
+
+      const titleEl = document.getElementById('commitment-modal-title');
+      const editInput = document.getElementById('comm-edit-id');
+      const instBox = document.getElementById('installment-fields');
+      const hasInstCheck = document.getElementById('comm-has-installment');
+
+      if (editId) {
+        const existing = appState.commitments.find(c => c.id === editId);
+        if (existing) {
+          titleEl.textContent = 'Edit Commitment';
+          editInput.value = existing.id;
+          setCommOwner(existing.owner || 'Joint');
+          document.getElementById('comm-name').value = existing.name || '';
+          document.getElementById('comm-amount').value = existing.amount || '';
+          document.getElementById('comm-due-day').value = existing.dueDay || 1;
+          document.getElementById('comm-category').value = existing.category || 'Housing & Rent';
+          document.getElementById('comm-autodebit').checked = Boolean(existing.autoDebit);
+
+          const hasInst = Number(existing.installmentTotal) > 0;
+          hasInstCheck.checked = hasInst;
+          instBox.classList.toggle('hidden', !hasInst);
+          if (hasInst) {
+            document.getElementById('comm-inst-current').value = existing.installmentCurrent || 1;
+            document.getElementById('comm-inst-total').value = existing.installmentTotal || 12;
+          }
+          openModalEl('commitment-modal');
+          return;
+        }
+      }
+
+      titleEl.textContent = 'New Shared Commitment';
+      editInput.value = '';
+      setCommOwner('Joint');
+      hasInstCheck.checked = false;
+      instBox.classList.add('hidden');
+      openModalEl('commitment-modal');
+    }
+
+    function closeCommitmentDrawer() {
+      closeModalEl('commitment-modal');
+    }
+
+    function setCommOwner(owner) {
+      document.getElementById('comm-owner-input').value = owner;
+      ['Joint', 'Adlan', 'Azfa'].forEach(o => {
+        const btn = document.getElementById(`comm-owner-${o}`);
+        if (!btn) return;
+        if (o === owner) {
+          const bg = o === 'Azfa' ? 'bg-[#ff2a93]' : (o === 'Adlan' ? 'bg-blue-600' : 'bg-violet-600');
+          btn.className = `py-1.5 rounded-xl text-xs font-extrabold ${bg} text-white shadow-xs transition`;
+        } else {
+          btn.className = 'py-1.5 rounded-xl text-xs font-bold text-slate-500 dark:text-slate-400 transition';
+        }
+      });
+    }
+
+    function toggleInstallmentFields() {
+      const checked = document.getElementById('comm-has-installment').checked;
+      document.getElementById('installment-fields').classList.toggle('hidden', !checked);
+    }
+
+    async function handleCommitmentSubmit(e) {
+      e.preventDefault();
+      const editId = document.getElementById('comm-edit-id').value;
+      const owner = document.getElementById('comm-owner-input').value;
+      const name = document.getElementById('comm-name').value.trim();
+      const amount = parseFloat(document.getElementById('comm-amount').value);
+      const dueDay = Math.min(31, Math.max(1, parseInt(document.getElementById('comm-due-day').value, 10) || 1));
+      const category = document.getElementById('comm-category').value;
+      const autoDebit = document.getElementById('comm-autodebit').checked;
+      const hasInst = document.getElementById('comm-has-installment').checked;
+      const instCurr = hasInst ? (parseInt(document.getElementById('comm-inst-current').value, 10) || 1) : null;
+      const instTotal = hasInst ? (parseInt(document.getElementById('comm-inst-total').value, 10) || 12) : null;
+
+      if (!name || isNaN(amount) || amount <= 0) return;
+
+      if (editId) {
+        const existing = appState.commitments.find(c => c.id === editId);
+        if (existing) {
+          existing.owner = owner;
+          existing.name = name;
+          existing.amount = Math.round(amount * 100) / 100;
+          existing.dueDay = dueDay;
+          existing.category = category;
+          existing.autoDebit = autoDebit;
+          existing.installmentCurrent = instCurr;
+          existing.installmentTotal = instTotal;
+        }
+        closeCommitmentDrawer();
+        showToast('Commitment updated');
+        await pushStateToGitHub(`Update commitment: ${name}`);
+      } else {
+        appState.commitments.push({
+          id: `comm-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+          name,
+          amount: Math.round(amount * 100) / 100,
+          dueDay,
+          owner,
+          category,
+          autoDebit,
+          isPaid: false,
+          installmentCurrent: instCurr,
+          installmentTotal: instTotal
+        });
+        closeCommitmentDrawer();
+        showToast('Commitment added');
+        await pushStateToGitHub(`Add commitment: ${name}`);
+      }
+    }
+
+    async function toggleCommitmentPaid(commId) {
+      const comm = appState.commitments.find(c => c.id === commId);
+      if (!comm) return;
+
+      const todayIso = new Date().toISOString().slice(0, 10);
+      if (!comm.isPaid) {
+        comm.isPaid = true;
+        appState.transactions.unshift({
+          id: `tx-bill-${Date.now()}-${Math.random().toString(36).slice(2, 5)}`,
+          type: 'commitment',
+          member: comm.owner === 'Joint' ? appState.activeMember : comm.owner,
+          title: `Paid: ${comm.name}`,
+          amount: Number(comm.amount) || 0,
+          category: comm.category || 'Utilities & Bills',
+          date: todayIso,
+          linkedCommitmentId: comm.id,
+          createdAt: Date.now()
+        });
+        showToast(`Marked "${comm.name}" as Paid`);
+        await pushStateToGitHub(`Paid bill: ${comm.name}`);
+      } else {
+        comm.isPaid = false;
+        const linkedIdx = appState.transactions.findIndex(t => t.linkedCommitmentId === comm.id);
+        if (linkedIdx !== -1) {
+          appState.transactions.splice(linkedIdx, 1);
+        }
+        showToast(`Marked "${comm.name}" as Unpaid`);
+        await pushStateToGitHub(`Undo bill payment: ${comm.name}`);
+      }
+    }
+
+    async function deleteCommitment(commId) {
+      const idx = appState.commitments.findIndex(c => c.id === commId);
+      if (idx === -1) return;
+      const removed = appState.commitments[idx];
+      appState.commitments.splice(idx, 1);
+      showToast(`Removed "${removed.name}"`);
+      await pushStateToGitHub(`Remove commitment: ${removed.name}`);
+    }
+
+    function openSettingsModal() {
+      document.getElementById('settings-gh-owner').value = ghConfig.owner;
+      document.getElementById('settings-gh-repo').value = ghConfig.repo;
+      document.getElementById('settings-gh-token').value = ghConfig.token;
+      document.getElementById('settings-opening-balance').value = appState.openingBalance;
+      updateSyncStatusUI(hasGitHubConfig() ? 'Synced' : 'Local Only', hasGitHubConfig());
+      openModalEl('settings-modal');
+    }
+
+    function closeSettingsModal() {
+      closeModalEl('settings-modal');
+    }
+
+    async function updateOpeningBalance() {
+      const val = parseFloat(document.getElementById('settings-opening-balance').value);
+      if (isNaN(val)) return;
+      appState.openingBalance = Math.round(val * 100) / 100;
+      showToast('Opening balance updated');
+      await pushStateToGitHub('Update opening balance');
+    }
+
+    async function resetToDemoData() {
+      const seed = getInitialDemoSeed();
+      appState.openingBalance = seed.openingBalance;
+      appState.commitments = seed.commitments;
+      appState.transactions = seed.transactions;
+      closeSettingsModal();
+      showToast('Loaded sample demo data');
+      await pushStateToGitHub('Load sample demo data');
+    }
+
+    async function handleClearAllDataClick() {
+      const label = document.getElementById('clear-data-label');
+      if (!clearDataArmed) {
+        clearDataArmed = true;
+        if (label) label.textContent = 'Tap again to confirm wipe';
+        clearTimeout(clearDataConfirmTimer);
+        clearDataConfirmTimer = setTimeout(() => {
+          clearDataArmed = false;
+          if (label) label.textContent = 'Clear All Data';
+        }, 3500);
+        return;
+      }
+
+      clearDataArmed = false;
+      clearTimeout(clearDataConfirmTimer);
+      if (label) label.textContent = 'Clear All Data';
+
+      appState.openingBalance = 0;
+      appState.commitments = [];
+      appState.transactions = [];
+      closeSettingsModal();
+      showToast('All household data cleared');
+      await pushStateToGitHub('Clear all household data');
+    }
+
+    function exportDataCSV() {
+      const rows = [['Date', 'Member', 'Type', 'Title', 'Category', 'Amount (MYR)']];
+      appState.transactions.forEach(t => {
+        rows.push([
+          t.date || '',
+          t.member || '',
+          t.type || '',
+          `"${String(t.title || '').replace(/"/g, '""')}"`,
+          `"${String(t.category || '').replace(/"/g, '""')}"`,
+          Number(t.amount || 0).toFixed(2)
+        ]);
+      });
+      const csv = rows.map(r => r.join(',')).join('\n');
+      triggerDownload(csv, `adlan-azfa-funds-${new Date().toISOString().slice(0, 10)}.csv`, 'text/csv;charset=utf-8;');
+      showToast('CSV exported');
+    }
+
+    function exportDataJSON() {
+      const json = JSON.stringify({
+        exportedAt: new Date().toISOString(),
+        openingBalance: appState.openingBalance,
+        commitments: appState.commitments,
+        transactions: appState.transactions
+      }, null, 2);
+      triggerDownload(json, `adlan-azfa-backup-${new Date().toISOString().slice(0, 10)}.json`, 'application/json');
+      showToast('JSON backup exported');
+    }
+
+    function triggerDownload(content, filename, mimeType) {
+      const blob = new Blob([content], { type: mimeType });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    /* ==========================================================================
+       INTERACTIVE SPOTLIGHT WALKTHROUGH GUIDE
+       ========================================================================== */
+    function openGuideModal(stepIndex = 0) {
+      currentGuideStep = Math.max(0, Math.min(GUIDE_STEPS.length - 1, stepIndex));
+      const overlay = document.getElementById('guide-overlay');
+      if (overlay) overlay.classList.remove('hidden');
+      renderGuideStep();
+    }
+
+    function closeGuideModal() {
+      const overlay = document.getElementById('guide-overlay');
+      if (overlay) overlay.classList.add('hidden');
+    }
+
+    function nextGuideStep() {
+      if (currentGuideStep >= GUIDE_STEPS.length - 1) {
+        closeGuideModal();
+        return;
+      }
+      currentGuideStep += 1;
+      renderGuideStep();
+    }
+
+    function prevGuideStep() {
+      if (currentGuideStep === 0) {
+        closeGuideModal();
+        return;
+      }
+      currentGuideStep -= 1;
+      renderGuideStep();
+    }
+
+    function renderGuideStep() {
+      const step = GUIDE_STEPS[currentGuideStep];
+      if (!step) return;
+
+      if (step.tab && currentTab !== step.tab) {
+        switchTab(step.tab);
+      }
+
+      document.getElementById('guide-step-badge').textContent = `Step ${currentGuideStep + 1} of ${GUIDE_STEPS.length}`;
+      document.getElementById('guide-title').textContent = step.title;
+      document.getElementById('guide-desc').textContent = step.desc;
+      const iconEl = document.getElementById('guide-icon');
+      if (iconEl) iconEl.setAttribute('data-lucide', step.icon);
+
+      const prevBtn = document.getElementById('guide-prev-btn');
+      const nextBtn = document.getElementById('guide-next-btn');
+      prevBtn.textContent = currentGuideStep === 0 ? 'Skip' : 'Back';
+      nextBtn.textContent = currentGuideStep === GUIDE_STEPS.length - 1 ? 'Done' : 'Next';
+
+      const dotsEl = document.getElementById('guide-dots');
+      dotsEl.innerHTML = GUIDE_STEPS.map((_, idx) => `
+        <span class="h-1.5 rounded-full transition-all ${idx === currentGuideStep ? 'w-4 bg-indigo-600' : 'w-1.5 bg-slate-300 dark:bg-slate-700'}"></span>
+      `).join('');
+
+      if (window.lucide) lucide.createIcons();
+
+      requestAnimationFrame(() => {
+        const target = document.getElementById(step.targetId);
+        const spotlight = document.getElementById('guide-spotlight');
+        const card = document.getElementById('guide-card');
+        const arrow = document.getElementById('guide-arrow');
+        if (!target || !spotlight || !card) return;
+
+        const rect = target.getBoundingClientRect();
+        const pad = 6;
+        spotlight.style.top = `${Math.max(4, rect.top - pad)}px`;
+        spotlight.style.left = `${Math.max(4, rect.left - pad)}px`;
+        spotlight.style.width = `${rect.width + pad * 2}px`;
+        spotlight.style.height = `${rect.height + pad * 2}px`;
+
+        const placeAbove = rect.top > window.innerHeight * 0.55;
+        if (placeAbove) {
+          card.style.top = 'auto';
+          card.style.bottom = `${window.innerHeight - rect.top + 18}px`;
+          if (arrow) {
+            arrow.style.top = 'auto';
+            arrow.style.bottom = '-7px';
+            arrow.style.left = `${Math.min(Math.max(24, rect.left + rect.width / 2 - 7), window.innerWidth - 36)}px`;
+            arrow.className = 'w-3.5 h-3.5 bg-white dark:bg-slate-900 border-r border-b border-slate-200 dark:border-slate-700 rotate-45 fixed';
+          }
+        } else {
+          card.style.bottom = 'auto';
+          card.style.top = `${Math.min(rect.bottom + 18, window.innerHeight - 230)}px`;
+          if (arrow) {
+            arrow.style.bottom = 'auto';
+            arrow.style.top = '-7px';
+            arrow.style.left = `${Math.min(Math.max(24, rect.left + rect.width / 2 - 7), window.innerWidth - 36)}px`;
+            arrow.className = 'w-3.5 h-3.5 bg-white dark:bg-slate-900 border-l border-t border-slate-200 dark:border-slate-700 rotate-45 fixed';
+          }
+        }
+      });
+    }
+
+    /* ==========================================================================
+       TOAST FEEDBACK & TACTILE TAP RIPPLES
+       ========================================================================== */
+    function showToast(msg) {
+      const banner = document.getElementById('toast-banner');
+      const msgEl = document.getElementById('toast-message');
+      if (!banner || !msgEl) return;
+
+      msgEl.textContent = msg;
+      banner.classList.remove('hidden', 'toast-enter');
+      banner.classList.add('flex');
+      void banner.offsetWidth;
+      banner.classList.add('toast-enter');
+
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        banner.classList.add('hidden');
+        banner.classList.remove('flex', 'toast-enter');
+      }, 2400);
+    }
+
+    document.addEventListener('pointerdown', (e) => {
+      const btn = e.target.closest('button');
+      if (!btn || btn.disabled) return;
+      const ripple = document.createElement('span');
+      ripple.className = 'tap-ripple';
+      ripple.style.left = `${e.clientX}px`;
+      ripple.style.top = `${e.clientY}px`;
+      document.body.appendChild(ripple);
+      ripple.addEventListener('animationend', () => ripple.remove(), { once: true });
+    });
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible' && hasGitHubConfig() && !isSyncing) {
+        pullFromGitHub(true);
+      }
+    });
+
+    /* ==========================================================================
+       INITIALIZATION ON WINDOW LOAD
+       ========================================================================== */
+    window.onload = function () {
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./sw.js').catch(() => {});
+      }
+
+      const now = new Date();
+      const monthLabel = now.toLocaleDateString('en-MY', { month: 'short', year: 'numeric' });
+      const headerMonthEl = document.getElementById('header-month-label');
+      if (headerMonthEl) headerMonthEl.textContent = monthLabel;
+
+      const shell = document.getElementById('app-shell');
+      if (shell) {
+        shell.addEventListener('animationend', () => {
+          shell.classList.remove('app-shell-enter');
+        }, { once: true });
+      }
+
+      setActiveMember(appState.activeMember, true);
+      applyTheme();
+      loadLocalSnapshotOrSeed();
+
+      if (hasGitHubConfig()) {
+        updateSyncStatusUI('Syncing...', true);
+        pullFromGitHub(true);
+      } else {
+        updateSyncStatusUI('Local Only', false);
+      }
+    };
+  </script>
+</body>
+</html>
